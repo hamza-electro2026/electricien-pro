@@ -275,7 +275,7 @@ T.fr.tabs.push("Outils");T.ar.tabs.push("أدوات");
 {const c1=calc;calc=()=>{c1();calc3();calc4()}}
 function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
  const uu=String(N("u"));[...$("up").options].forEach(o=>o.selected=o.value==uu);
- const In=C.breaker(N("i4"));$("o4").innerHTML+=row(t.fg,In||">250","A");
+ const In=C.breaker(N("i4"));
  const P=N("pq"),a=cl(N("c1"),.1,1),b=cl(N("c2"),.1,1);
  if(P>0&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
  $("o10a").innerHTML=row(t.qcl,f(q),"kvar","big")+row(t.ib,f(i1),"A")+row(t.ia,f(i2),"A")+row(t.gn,f(i1-i2),"A")}
@@ -326,7 +326,7 @@ function calc(){const t=T[L],s=sys(),U=N("u"),c=Math.min(Math.max(N("cos"),0.01)
  const S3=+$("s3").value,d=C.dU(mat,s,N("i3"),N("l3"),S3),pp=d/U*100,az=C.amp(mat,S3,s);
  $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");
  const I4=N("i4"),In=C.breaker(I4),sc=In?C.sByI("cu",In,s):null;
- $("o4").innerHTML=row(t.br,In?In:">250","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA");
+ $("o4").innerHTML=row(t.br,In?In:">250","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,In||">250","A");
 }
 function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
