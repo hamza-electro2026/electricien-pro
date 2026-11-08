@@ -325,7 +325,7 @@ function lang(){const t=T[L];document.documentElement.lang=L;document.documentEl
  document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>show(+b.dataset.j));
  $("o5").innerHTML=t.fm;$("o9").innerHTML=t.gd;fillSc();show(cur);calc()}
 let cur=0;
-function show(j){cur=j;document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id==="p"+j));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
+function show(j){cur=j;const order=["p1","p2","p3","p4","p5","p6","p7","p8","p10","p9"];document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id===order[j]));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
 function secs(){const mat=$("mat").value,o=$("s3"),old=o.value;o.innerHTML=A[mat].S.map(x=>`<option>${x}</option>`).join("");if(A[mat].S.includes(+old))o.value=old;else o.value=A[mat].S[Math.min(3,A[mat].S.length-1)]}
 document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",()=>{if(e.id=="sys"){$("u").value=sys()==1?220:380}if(e.id=="up")$("u").value=$("up").value;if(e.id=="mat")secs();calc()}));
 $("lb").onclick=()=>{L=L=="fr"?"ar":"fr";lang()};
