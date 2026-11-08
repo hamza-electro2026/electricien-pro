@@ -339,8 +339,8 @@ function calc(){const t=T[L],s=sys(),U=N("u"),c=Math.min(Math.max(N("cos"),0.01)
  $("o2").innerHTML=r;
  const S3=+$("s3").value,d=C.dU(mat,s,N("i3"),N("l3"),S3),pp=d/U*100,az=C.amp(mat,S3,s);
  $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");
- const I4=N("i4"),In=C.breaker(I4),sc=In?C.sByI("cu",In,s):null;
- $("o4").innerHTML=row(t.br,In?In:">250","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,In||">250","A");
+ const I4=N("i4"),In=I4>0?C.breaker(I4):null,sc=In?C.sByI(mat,In,s):null;
+ $("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");
 }
 function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
