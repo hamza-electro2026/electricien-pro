@@ -23,3 +23,15 @@ Les résultats sont des estimations pédagogiques, pas une validation de concept
 ## Déploiement
 
 Le dépôt est destiné à être publié avec GitHub Pages depuis la branche principale.
+
+
+## Pages d'information
+
+- Application : https://hamza-electro2026.github.io/electricien-pro/
+- À propos : `about.html`
+- Guide pédagogique : `guide.html`
+- Politique de confidentialité : `privacy.html`
+- Contact et signalement : `contact.html`
+- Référencement : `robots.txt` et `sitemap.xml`
+
+Les pages d'information sont disponibles en français et en arabe. La politique de confidentialité décrit le fonctionnement de la version actuelle ; elle devra être mise à jour avant l'ajout d'outils publicitaires, d'analyse d'audience ou de formulaires.
