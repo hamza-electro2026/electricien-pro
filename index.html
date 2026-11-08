@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Électricien Pro</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1d4ed8">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#14213d;--mut:#5b6784;--pri:#f59e0b;--pri2:#1d4ed8;--bd:#dfe4ef;--ok:#15803d;--bad:#b91c1c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1729;--card:#18233d;--tx:#eef2ff;--mut:#9aa8c7;--bd:#2a3858;--ok:#4ade80;--bad:#f87171}}
+:root[data-theme="dark"]{--bg:#0f1729;--card:#18233d;--tx:#eef2ff;--mut:#9aa8c7;--bd:#2a3858;--ok:#4ade80;--bad:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#1d4ed8,#1e3a8a);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1{margin:0;font-size:20px}header small{opacity:.85;display:block;font-size:12px}
+.lang{background:var(--pri);color:#1a1200;border:0;border-radius:20px;padding:8px 14px;font-weight:700;font-size:14px}
+main{max-width:640px;margin:0 auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:13px;color:var(--mut);margin-bottom:3px}
+input,select{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:16px}
+nav{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+nav button{flex:none;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:9px 13px;border-radius:20px;font-size:14px}
+nav button.on{background:var(--pri2);color:#fff;border-color:var(--pri2)}
+.res{margin-top:12px;display:grid;gap:8px}
+.r{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--bg);border-radius:10px;padding:10px 12px}
+.r b{font-size:18px;color:var(--pri2)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .r b{color:#fbbf24}}
+.r.big{background:var(--pri2);color:#fff}.r.big b{color:#fff;font-size:22px}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.note{font-size:12.5px;color:var(--mut);margin-top:8px}
+.panel{display:none}.panel.on{display:block}
+h3{margin:0 0 10px;font-size:17px}
+.f{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--bg);padding:8px 10px;border-radius:8px;margin:4px 0 10px;direction:ltr;text-align:left;overflow-x:auto}
+ul{padding-inline-start:20px;margin:6px 0}
+</style>
+</head>
+<body>
+<header><div><h1>⚡ <span data-i="app"></span></h1><small data-i="sub"></small></div><button class="lang" id="lb">العربية</button></header>
+<main>
+<div class="card"><div class="g">
+<div><label data-i="sys"></label><select id="sys"><option value="1" data-i="mono"></option><option value="3" data-i="tri"></option></select></div>
+<div><label data-i="volt"></label><input id="u" type="number" inputmode="decimal" value="220"></div>
+<div><label data-i="cos"></label><input id="cos" type="number" inputmode="decimal" step="0.01" value="0.85"></div>
+<div><label data-i="mat"></label><select id="mat"><option value="cu" data-i="cu"></option><option value="al" data-i="al"></option></select></div>
+<div><label data-i="vp"></label><select id="up"><option>220</option><option>230</option><option>380</option><option>400</option></select></div>
+</div></div>
+<nav id="nav"></nav>
+
+<section class="panel on" id="p0"><div class="card"><h3 data-i="t0"></h3>
+<div class="g"><div><label data-i="mode"></label><select id="mode"><option value="pi" data-i="pi"></option><option value="ip" data-i="ip"></option></select></div>
+<div><label id="vl"></label><input id="val" type="number" inputmode="decimal" value="3000"></div>
+<div><label data-i="unit"></label><select id="un"><option value="1">W</option><option value="1000">kW</option></select></div></div>
+<div class="res" id="o0"></div></div></section>
+
+<section class="panel" id="p1"><div class="card"><h3 data-i="t1"></h3>
+<div class="g"><div><label data-i="pw"></label><input id="cw" type="number" inputmode="decimal" value="2000"></div>
+<div><label data-i="hd"></label><input id="ch" type="number" inputmode="decimal" value="5"></div>
+<div><label data-i="dm"></label><input id="cd" type="number" inputmode="decimal" value="30"></div>
+<div><label data-i="px"></label><input id="cp" type="number" inputmode="decimal" step="0.01" value="1.20"></div></div>
+<div class="res" id="o1"></div><div class="note" data-i="pxn"></div></div></section>
+
+<section class="panel" id="p2"><div class="card"><h3 data-i="t2"></h3>
+<div class="g"><div><label data-i="cur"></label><input id="i2" type="number" inputmode="decimal" value="25"></div>
+<div><label data-i="len"></label><input id="l2" type="number" inputmode="decimal" value="30"></div>
+<div><label data-i="mx"></label><select id="m2"><option value="3">3 %</option><option value="5" selected>5 %</option></select></div></div>
+<div class="res" id="o2"></div><div class="note" data-i="cn"></div></div></section>
+
+<section class="panel" id="p3"><div class="card"><h3 data-i="t3"></h3>
+<div class="g"><div><label data-i="cur"></label><input id="i3" type="number" inputmode="decimal" value="25"></div>
+<div><label data-i="len"></label><input id="l3" type="number" inputmode="decimal" value="30"></div>
+<div><label data-i="sec"></label><select id="s3"></select></div></div>
+<div class="res" id="o3"></div><div class="note" data-i="vn"></div></div></section>
+
+<section class="panel" id="p4"><div class="card"><h3 data-i="t4"></h3>
+<div class="g"><div><label data-i="cur"></label><input id="i4" type="number" inputmode="decimal" value="18"></div>
+<div><label data-i="lt"></label><select id="lt"><option value="B" data-i="lb"></option><option value="C" data-i="lc" selected></option><option value="D" data-i="ld"></option></select></div></div>
+<div class="res" id="o4"></div><div class="note" data-i="pn"></div></div></section>
+
+<section class="panel" id="p5"><div class="card" id="o5"></div></section>
+<section class="panel" id="p6"><div class="card"><h3 data-i="tm"></h3>
+<div class="g"><div><label data-i="pmk"></label><input id="pm" type="number" inputmode="decimal" step="0.1" value="5.5"></div>
+<div><label data-i="volt"></label><input id="um" type="number" inputmode="decimal" value="380"></div>
+<div><label data-i="cos"></label><input id="mcos" type="number" inputmode="decimal" step="0.01" value="0.85"></div>
+<div><label data-i="mef"></label><input id="mef" type="number" inputmode="decimal" value="88"></div></div>
+<div class="res" id="o6"></div><div class="note" data-i="mn"></div></div></section>
+
+<section class="panel" id="p7"><div class="card"><h3 data-i="tl"></h3>
+<div class="g"><div><label data-i="rmn"></label><select id="rm"><option value="200" data-i="r1"></option><option value="300" data-i="r2"></option><option value="150" data-i="r3"></option><option value="200" data-i="r4"></option><option value="500" data-i="r5"></option><option value="300" data-i="r6"></option><option value="100" data-i="r7"></option></select></div>
+<div><label data-i="sa"></label><input id="sa" type="number" inputmode="decimal" value="20"></div>
+<div><label data-i="lm"></label><input id="lm" type="number" inputmode="decimal" value="800"></div>
+<div><label data-i="lw"></label><input id="lw" type="number" inputmode="decimal" value="9"></div>
+<div><label data-i="cu2"></label><input id="cu2" type="number" inputmode="decimal" step="0.05" value="0.6"></div>
+<div><label data-i="mf"></label><input id="mf" type="number" inputmode="decimal" step="0.05" value="0.8"></div></div>
+<div class="res" id="o7"></div><div class="note" data-i="ln"></div></div></section>
+
+<section class="panel" id="p8"><div class="card"><h3 data-i="ts"></h3><label data-i="chs"></label><select id="sc"></select><div id="o8" style="margin-top:12px"></div></div></section>
+
+<section class="panel" id="p10">
+<div class="card"><h3 data-i="tc"></h3><div class="g">
+<div><label data-i="pq"></label><input id="pq" type="number" inputmode="decimal" value="20"></div>
+<div><label data-i="c1"></label><input id="c1" type="number" inputmode="decimal" step="0.01" value="0.75"></div>
+<div><label data-i="c2"></label><input id="c2" type="number" inputmode="decimal" step="0.01" value="0.95"></div></div>
+<div class="res" id="o10a"></div><div class="note" data-i="cn2"></div></div>
+<div class="card"><h3 data-i="tcv"></h3><div class="g">
+<div><label data-i="cvv"></label><input id="cvv" type="number" inputmode="decimal" value="10"></div>
+<div><label data-i="cvm"></label><select id="cvm"><option value="0" data-i="k1"></option><option value="1" data-i="k2"></option><option value="2" data-i="k3"></option><option value="3" data-i="k4"></option></select></div></div>
+<div class="res" id="o10b"></div></div>
+<div class="card"><h3 data-i="tct"></h3><label data-i="cty"></label><select id="ct"><option value="0" data-i="ct0"></option><option value="1" data-i="ct1"></option><option value="2" data-i="ct2"></option><option value="3" data-i="ct3"></option><option value="4" data-i="ct4"></option><option value="5" data-i="ct5"></option></select>
+<div class="res" id="o10c"></div><div class="note" data-i="ctn"></div></div>
+</section>
+<section class="panel" id="p9"><div id="o9"></div></section>
+
+<div class="note" data-i="disc" style="padding:0 4px 20px"></div>
+</main>
+<script>
+/*CORE*/
+const STD=[6,10,16,20,25,32,40,50,63,80,100,125,160,200,250];
+const A={cu:{S:[1.5,2.5,4,6,10,16,25,35,50,70,95],a2:[17.5,24,32,41,57,76,101,125,151,192,232],a3:[15.5,21,28,36,50,68,89,110,134,171,207],rho:0.0225},
+al:{S:[16,25,35,50,70,95],a2:[59,79,98,118,150,181],a3:[53,70,86,104,133,161],rho:0.036}};
+const C={
+ m:s=>s==1?1:Math.sqrt(3),
+ k:s=>s==1?2:Math.sqrt(3),
+ P:(s,U,I,c)=>C.m(s)*U*I*c,
+ I:(s,U,P,c)=>P/(C.m(s)*U*c),
+ sByI:(mat,I,s)=>{const t=A[mat],a=s==1?t.a2:t.a3;for(let j=0;j<a.length;j++)if(a[j]>=I)return t.S[j];return null},
+ amp:(mat,S,s)=>{const t=A[mat],j=t.S.indexOf(S);return j<0?0:(s==1?t.a2:t.a3)[j]},
+ sByDrop:(mat,s,U,I,L,pct)=>{const t=A[mat],need=C.k(s)*t.rho*L*I/(pct/100*U);for(const x of t.S)if(x>=need)return{need,S:x};return{need,S:null}},
+ dU:(mat,s,I,L,S)=>C.k(s)*A[mat].rho*L*I/S,
+ breaker:I=>{for(const x of STD)if(x>=I)return x;return null}
+};
+/*END*/
+const T={fr:{app:"Électricien Pro",sub:"Calculs électriques 220 V / 380 V",sys:"Réseau",mono:"Monophasé 220 V",tri:"Triphasé 380 V",volt:"Tension (V)",cos:"Facteur de puissance cos φ",mat:"Conducteur",cu:"Cuivre",al:"Aluminium",
+tabs:["Courant","Coût","Câble","Chute U","Protection","Formules"],t0:"Courant et puissance",mode:"Calcul",pi:"Puissance → Courant",ip:"Courant → Puissance",unit:"Unité",vP:"Puissance",vI:"Courant (A)",
+t1:"Consommation et coût",pw:"Puissance (W)",hd:"Heures / jour",dm:"Jours / mois",px:"Prix du kWh (DH)",pxn:"Le prix du kWh dépend de votre tranche de consommation : reprenez-le sur votre facture (ONEE ou régie).",
+t2:"Section de câble",cur:"Courant (A)",len:"Longueur (m)",mx:"Chute de tension max.",cn:"La section retenue respecte à la fois le courant admissible (câble sous conduit, isolant PVC) et la chute de tension maximale.",
+t3:"Chute de tension",sec:"Section (mm²)",vn:"Calcul résistif (cos φ = 1), donc légèrement pessimiste. Limites usuelles : 3 % éclairage, 5 % autres usages.",
+t4:"Disjoncteur et protection",lt:"Type de charge",lb:"Éclairage / résistif (B)",lc:"Prises / usage général (C)",ld:"Moteurs / fort appel (D)",pn:"Choisissez toujours In ≥ Ib et In ≤ Iz du câble. Valeurs indicatives : vérifiez la norme locale (NF C 15-100 / IEC 60364).",
+P:"Puissance",I:"Courant",S:"Puissance apparente",kwhd:"Énergie / jour",kwhm:"Énergie / mois",kwhy:"Énergie / an",cm:"Coût / mois",cy:"Coût / an",
+sv:"Section minimale (chute U)",si:"Section minimale (courant)",sf:"Section recommandée",real:"Chute réelle",none:"Hors table : étudier le cas",dv:"Chute de tension",ok:"Conforme",ko:"Trop élevée",
+br:"Calibre du disjoncteur In",cv:"Courbe conseillée",cb:"Section de câble mini (Cu)",rcd:"Différentiel conseillé",rcdv:"30 mA (prises, locaux humides)",
+disc:"Résultats indicatifs. Les installations doivent être validées par un électricien qualifié selon la norme en vigueur.",
+fm:"<h3>Formules</h3><b>Monophasé</b><div class='f'>P = U × I × cos φ<br>I = P / (U × cos φ)</div><b>Triphasé</b><div class='f'>P = √3 × U × I × cos φ<br>I = P / (√3 × U × cos φ)</div><b>Énergie et coût</b><div class='f'>E (kWh) = P (kW) × heures<br>Coût = E × prix du kWh</div><b>Chute de tension</b><div class='f'>Mono : ΔU = 2 × ρ × L × I / S<br>Tri : ΔU = √3 × ρ × L × I / S<br>ρ cuivre = 0,0225 · ρ alu = 0,036 Ω·mm²/m</div><h3>Guides pratiques</h3><ul><li>Coupez toujours le courant et vérifiez l’absence de tension (VAT) avant d’intervenir.</li><li>Une prise 16 A : câble 2,5 mm², disjoncteur 20 A. Éclairage : 1,5 mm², 10 ou 16 A.</li><li>Un défaut de terre exige un différentiel 30 mA sur les circuits prises.</li><li>Serrez bien les bornes : un contact lâche chauffe.</li><li>Ne dépassez jamais le courant admissible du câble avec le calibre du disjoncteur.</li></ul>"},
+ar:{app:"كهربائي برو",sub:"حسابات كهربائية 220 فولت / 380 فولت",sys:"الشبكة",mono:"أحادي الطور 220 فولت",tri:"ثلاثي الأطوار 380 فولت",volt:"الجهد (فولت)",cos:"معامل القدرة cos φ",mat:"الموصل",cu:"نحاس",al:"ألومنيوم",
+tabs:["التيار","التكلفة","الكابل","هبوط الجهد","الحماية","القوانين"],t0:"التيار والقدرة",mode:"الحساب",pi:"القدرة ← التيار",ip:"التيار ← القدرة",unit:"الوحدة",vP:"القدرة",vI:"التيار (أمبير)",
+t1:"الاستهلاك والتكلفة",pw:"القدرة (واط)",hd:"ساعات / يوم",dm:"أيام / شهر",px:"سعر الكيلوواط ساعة (درهم)",pxn:"يختلف سعر الكيلوواط ساعة حسب شريحة الاستهلاك: خذه من فاتورتك (المكتب الوطني أو الوكالة).",
+t2:"مقطع الكابل",cur:"التيار (أمبير)",len:"الطول (متر)",mx:"أقصى هبوط للجهد",cn:"المقطع المقترح يحترم التيار المسموح (كابل داخل أنبوب، عزل PVC) وأقصى هبوط للجهد.",
+t3:"هبوط الجهد",sec:"المقطع (مم²)",vn:"حساب مقاومي (cos φ = 1) لذلك هو متحفظ قليلاً. الحدود المعتادة: 3% للإنارة و5% لباقي الاستعمالات.",
+t4:"القاطع والحماية",lt:"نوع الحمل",lb:"إنارة / مقاومي (B)",lc:"مقابس / استعمال عام (C)",ld:"محركات / تيار إقلاع عال (D)",pn:"اختر دائماً In ≥ Ib و In ≤ Iz للكابل. قيم إرشادية: راجع المعيار المحلي (NF C 15-100 / IEC 60364).",
+P:"القدرة",I:"التيار",S:"القدرة الظاهرية",kwhd:"الطاقة / يوم",kwhm:"الطاقة / شهر",kwhy:"الطاقة / سنة",cm:"التكلفة / شهر",cy:"التكلفة / سنة",
+sv:"أدنى مقطع (هبوط الجهد)",si:"أدنى مقطع (التيار)",sf:"المقطع الموصى به",real:"الهبوط الفعلي",none:"خارج الجدول: يلزم دراسة",dv:"هبوط الجهد",ok:"مطابق",ko:"مرتفع جداً",
+br:"عيار القاطع In",cv:"المنحنى المقترح",cb:"أدنى مقطع كابل (نحاس)",rcd:"قاطع تفاضلي مقترح",rcdv:"30 مللي أمبير (المقابس والأماكن الرطبة)",
+disc:"النتائج إرشادية. يجب أن يصادق على التركيبات كهربائي مؤهل وفق المعيار المعمول به.",
+fm:"<h3>القوانين</h3><b>أحادي الطور</b><div class='f'>P = U × I × cos φ<br>I = P / (U × cos φ)</div><b>ثلاثي الأطوار</b><div class='f'>P = √3 × U × I × cos φ<br>I = P / (√3 × U × cos φ)</div><b>الطاقة والتكلفة</b><div class='f'>E (kWh) = P (kW) × الساعات<br>التكلفة = E × سعر الكيلوواط ساعة</div><b>هبوط الجهد</b><div class='f'>Mono : ΔU = 2 × ρ × L × I / S<br>Tri : ΔU = √3 × ρ × L × I / S<br>ρ Cu = 0.0225 · ρ Al = 0.036</div><h3>نصائح عملية</h3><ul><li>اقطع التيار دائماً وتأكد من غياب الجهد قبل أي تدخل.</li><li>مقبس 16 أمبير: كابل 2.5 مم² وقاطع 20 أمبير. الإنارة: 1.5 مم² وقاطع 10 أو 16 أمبير.</li><li>يلزم قاطع تفاضلي 30 مللي أمبير على دوائر المقابس.</li><li>شد المشابك جيداً: الاتصال الرخو يسخن.</li><li>لا تتجاوز أبداً التيار المسموح للكابل بعيار القاطع.</li></ul>"}};
+/*C2*/
+const CS=[9,12,18,25,32,40,50,65,80,95,115,150];
+C.motor=(P,U,c,e)=>{const I=P/(Math.sqrt(3)*U*c*e);return{I,Pe:P/e,Id:7*I,Iy:7*I/3,K:CS.find(x=>x>=I)||null,B:C.breaker(I)}};
+C.lamps=(E,S,F,cu,mf)=>Math.ceil(E*S/(F*cu*mf));
+/*E2*/
+const ln=(a,b,c,d,k="currentColor")=>`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="${k}" stroke-width="2.5" stroke-linecap="round"/>`;
+const bx=(x,y,w,h,t)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="var(--card)" stroke="currentColor" stroke-width="2"/><text x="${x+w/2}" y="${y+h/2+4}" text-anchor="middle" font-size="11" fill="currentColor">${t}</text>`;
+const tx=(x,y,t,k)=>`<text x="${x}" y="${y}" font-size="12" font-weight="700" fill="${k||"currentColor"}">${t}</text>`;
+const RD="#dc2626",BL="#2563eb",GR="#16a34a",OR="#f59e0b";
+const lp=(x,y)=>`<circle cx="${x}" cy="${y}" r="14" fill="none" stroke="${OR}" stroke-width="2.5"/>`+ln(x-9,y-9,x+9,y+9,OR)+ln(x-9,y+9,x+9,y-9,OR);
+const SC=[
+ tx(4,44,"L",RD)+ln(20,40,130,40,RD)+bx(130,25,44,30,"S")+ln(174,40,290,40,RD)+ln(290,40,290,86,RD)+lp(290,100)+ln(290,114,290,160,BL)+ln(20,160,290,160,BL)+tx(4,164,"N",BL),
+ tx(4,44,"L",RD)+ln(20,40,60,40,RD)+bx(60,25,44,30,"S1")+ln(104,32,226,32,OR)+ln(104,48,226,48,OR)+bx(226,25,44,30,"S2")+ln(270,40,300,40,RD)+ln(300,40,300,86,RD)+lp(300,100)+ln(300,114,300,160,BL)+ln(20,160,300,160,BL)+tx(4,164,"N",BL),
+ tx(4,44,"L",RD)+ln(20,40,60,40,RD)+bx(60,25,54,30,"S1+S2")+ln(114,32,290,32,RD)+ln(290,32,290,86,RD)+lp(290,100)+ln(290,114,290,160,BL)+ln(114,48,230,48,RD)+ln(230,48,230,86,RD)+lp(230,100)+ln(230,114,230,160,BL)+ln(20,160,290,160,BL)+tx(4,164,"N",BL),
+ tx(4,44,"L",RD)+ln(20,40,270,40,RD)+ln(20,170,270,170,BL)+tx(4,174,"N",BL)+ln(70,40,70,60,RD)+bx(50,60,40,26,"BP1")+ln(70,86,70,120,RD)+ln(130,40,130,60,RD)+bx(110,60,40,26,"BP2")+ln(130,86,130,120,RD)+ln(70,120,160,120,RD)+bx(160,107,50,26,"A1-A2")+ln(185,133,185,170,BL)+ln(250,40,250,60,RD)+bx(230,60,40,26,"TL")+ln(250,86,250,106,RD)+lp(250,120)+ln(250,134,250,170,BL),
+ ln(20,40,90,40,RD)+ln(20,70,90,70,BL)+ln(20,100,90,100,GR)+tx(4,44,"L",RD)+tx(4,74,"N",BL)+tx(0,92,"PE",GR)+bx(90,22,84,95,"20A + 30mA")+ln(174,40,230,40,RD)+ln(174,70,230,70,BL)+ln(174,100,230,100,GR)+bx(230,22,70,95,"16A + PE")+tx(180,140,"2,5 mm²"),
+ ln(40,10,40,25)+ln(60,10,60,25)+ln(80,10,80,25)+ln(40,45,40,70)+ln(60,45,60,70)+ln(80,45,80,70)+ln(40,90,40,115)+ln(60,90,60,115)+ln(80,90,80,115)+ln(40,135,40,149)+ln(60,135,60,149)+ln(80,135,80,149)+tx(34,8,"L1")+tx(54,8,"L2")+tx(74,8,"L3")+bx(25,25,70,20,"Q1")+bx(25,70,70,20,"KM1")+bx(25,115,70,20,"F1")+`<circle cx="60" cy="165" r="16" fill="var(--card)" stroke="currentColor" stroke-width="2"/>`+tx(48,169,"M3~")+ln(150,10,260,10,RD)+ln(200,10,200,30)+bx(178,30,44,20,"S0")+ln(200,50,200,66)+bx(178,66,44,20,"S1")+ln(200,86,200,106)+bx(178,106,44,20,"F1")+ln(200,126,200,140)+bx(178,140,44,20,"KM1")+ln(200,160,200,176,BL)+ln(150,176,260,176,BL)+ln(200,58,262,58)+ln(262,58,262,66)+bx(240,66,44,20,"KM1")+ln(262,86,262,96)+ln(262,96,200,96)
+];
+Object.assign(T.fr,{
+tabs:["Courant","Coût","Câble","Chute U","Protection","Formules","Moteur","Éclairage","Schémas","Guides"],
+tm:"Moteur triphasé",pmk:"Puissance utile (kW)",mef:"Rendement η (%)",mi:"Courant nominal In",mpe:"Puissance absorbée",mid:"Démarrage direct (≈ 7 × In)",miy:"Démarrage étoile-triangle (≈ 1/3)",mct:"Contacteur mini (AC-3)",mth:"Relais thermique : réglage",mbr:"Disjoncteur moteur (courbe D)",mfu:"Fusible aM",mcb:"Section câble mini",
+mn:"Formule : In = P / (√3 × U × cos φ × η). Étoile-triangle : plaque 380/660 V → couplage triangle sur 380 V ; démarrage en étoile (tension ÷ √3, courant et couple ÷ 3) puis passage en triangle. Autres méthodes : démarrage direct (petits moteurs), statorique, démarreur progressif, variateur de vitesse. Le fusible aM ne protège que du court-circuit : il faut un relais thermique. Valeurs de démarrage indicatives.",
+tl:"Éclairage",rmn:"Local",r1:"Salon / séjour (200 lx)",r2:"Cuisine (300 lx)",r3:"Chambre (150 lx)",r4:"Salle de bain (200 lx)",r5:"Bureau (500 lx)",r6:"Atelier (300 lx)",r7:"Couloir (100 lx)",sa:"Surface (m²)",lm:"Flux par lampe (lumens)",lw:"Puissance par lampe (W)",cu2:"Facteur d’utilisation",mf:"Facteur de maintenance",
+ln:"Méthode du flux : N = (E × S) / (Φ × CU × MF). Les niveaux d’éclairement sont usuels : vérifiez la norme (EN 12464-1). Un circuit éclairage = 10 A max, chargé à 80 %.",
+nl:"Nombre de lampes",tw:"Puissance totale",ti:"Courant (220 V)",dn:"Densité",nc:"Circuits éclairage (10 A)",
+ts:"Schémas électriques",chs:"Choisir un schéma",
+sn:["Simple allumage","Va-et-vient","Double allumage","Télérupteur","Prises de courant","Commande moteur industriel"],
+sd:["La phase (L, rouge/marron/noir) passe par l’interrupteur ; le neutre (N, bleu) va directement à la lampe. Terre (vert/jaune) sur les luminaires de classe I. Câble 1,5 mm².","Deux interrupteurs va-et-vient reliés par deux fils navettes (orange). La phase arrive au commun de S1 ; le commun de S2 va à la lampe. Câble 1,5 mm².","Un interrupteur double commande deux lampes ou groupes de lampes indépendants. Une phase par commande, un neutre commun.","Les boutons poussoirs (BP1, BP2, en parallèle) alimentent la bobine A1-A2 du télérupteur ; son contact commute la lampe. Autant de boutons que voulu, en parallèle.","Circuit prises : disjoncteur 20 A + différentiel 30 mA, câble 2,5 mm² avec terre (PE), 8 prises maximum par circuit en usage courant.","Circuit de puissance : sectionneur Q1, contacteur KM1, relais thermique F1, moteur. Commande : arrêt S0 (NF), marche S1 (NO) avec auto-maintien par le contact de KM1, contact du relais F1. Respectez la tension de bobine."],
+disc:"Les résultats sont indicatifs. Normes de référence : NF C 15-100 et IEC 60364 (installations), IEC 60947 (appareillage), IEC 60898 (disjoncteurs), ainsi que les normes marocaines et les règles du distributeur en vigueur. Toute installation doit être réalisée et validée par un électricien qualifié.",
+gd:"<div class='card' style='border-color:var(--bad)'><h3>⚠ Sécurité</h3><ul><li>Les 5 règles : séparer, condamner, vérifier l’absence de tension (VAT), mettre à la terre/court-circuiter si nécessaire, délimiter la zone.</li><li>Travaillez hors tension, avec outils isolés, EPI et habilitation adaptée.</li><li>Ne shuntez jamais une protection. Une protection qui saute est un symptôme : cherchez la cause.</li></ul></div><div class='card'><h3>🏠 Résidentiel</h3><ul><li>Éclairage : 1,5 mm², 10 A (16 A max). Prises : 2,5 mm², 20 A.</li><li>Plaque de cuisson : 6 mm², 32 A. Chauffe-eau, lave-linge : circuit dédié 2,5 mm², 20 A.</li><li>Différentiel 30 mA (type A) sur prises et locaux humides ; mise à la terre obligatoire.</li><li>Tableau : repérez chaque circuit, gardez une réserve de place.</li></ul></div><div class='card'><h3>🏭 Industriel</h3><ul><li>Départ moteur : sectionneur + protection court-circuit (disjoncteur ou fusible aM) + contacteur + relais thermique.</li><li>Vérifiez régime de neutre (TT, TN, IT), indice IP et température ambiante.</li><li>Équilibrez les phases et corrigez le cos φ si besoin.</li></ul></div><div class='card'><h3>🛡 Protections</h3><ul><li>Thermique (bilame) : surcharge. Magnétique : court-circuit. Courbes : B 3–5 × In, C 5–10 × In, D 10–20 × In.</li><li>Fusibles : gG (câbles), aM (moteurs, court-circuit seul).</li><li>Différentiel : 30 mA personnes ; 300 mA incendie / général. Testez le bouton test chaque mois.</li></ul></div><div class='card'><h3>🔧 Dépannage</h3><ul><li>Disjoncteur qui saute : surcharge (mesurez le courant) ou court-circuit (isolez les récepteurs).</li><li>Différentiel qui saute : défaut d’isolement ; déconnectez circuit par circuit, mesurez à l’mégohmmètre.</li><li>Moteur qui chauffe : surcharge, phase manquante, tension basse, roulement.</li><li>Contacteur qui claque : tension de bobine faible ou contacts usés.</li><li>Lampe qui clignote ou prise chaude : connexion desserrée, resserrez.</li></ul></div>"});
+Object.assign(T.ar,{
+tabs:["التيار","التكلفة","الكابل","هبوط الجهد","الحماية","القوانين","المحرك","الإنارة","المخططات","الأدلة"],
+tm:"محرك ثلاثي الأطوار",pmk:"القدرة المفيدة (كيلوواط)",mef:"المردود η (%)",mi:"التيار الاسمي In",mpe:"القدرة الممتصة",mid:"إقلاع مباشر (≈ 7 × In)",miy:"إقلاع نجمة-مثلث (≈ 1/3)",mct:"أدنى ملامس (AC-3)",mth:"المرحل الحراري: الضبط",mbr:"قاطع المحرك (المنحنى D)",mfu:"مصهر aM",mcb:"أدنى مقطع كابل",
+mn:"القانون: In = P / (√3 × U × cos φ × η). نجمة-مثلث: لوحة المحرك 380/660 فولت ← ربط مثلث على 380 فولت؛ الإقلاع بنجمة (الجهد ÷ √3 والتيار والعزم ÷ 3) ثم التحويل إلى مثلث. طرق أخرى: إقلاع مباشر (محركات صغيرة)، إقلاع بمقاومات، مبدئ تدريجي، متغير سرعة. مصهر aM يحمي من القصر فقط، يلزم مرحل حراري. قيم الإقلاع تقريبية.",
+tl:"الإنارة",rmn:"المكان",r1:"صالون (200 لوكس)",r2:"مطبخ (300 لوكس)",r3:"غرفة نوم (150 لوكس)",r4:"حمام (200 لوكس)",r5:"مكتب (500 لوكس)",r6:"ورشة (300 لوكس)",r7:"ممر (100 لوكس)",sa:"المساحة (م²)",lm:"التدفق لكل مصباح (لومن)",lw:"قدرة المصباح (واط)",cu2:"معامل الاستعمال",mf:"معامل الصيانة",
+ln:"طريقة التدفق: N = (E × S) / (Φ × CU × MF). مستويات الإضاءة معتادة: راجع المعيار (EN 12464-1). دائرة إنارة = 10 أمبير كحد أقصى بحمولة 80%.",
+nl:"عدد المصابيح",tw:"القدرة الإجمالية",ti:"التيار (220 فولت)",dn:"الكثافة",nc:"دوائر الإنارة (10 أمبير)",
+ts:"المخططات الكهربائية",chs:"اختر مخططاً",
+sn:["إنارة بسيطة","ذهاب وإياب","إنارة مزدوجة","تيليروبتور","المقابس","تحكم في محرك صناعي"],
+sd:["الطور (L) يمر عبر المفتاح والمحايد (N، أزرق) يذهب مباشرة إلى المصباح. الأرضي (أخضر/أصفر) للأجهزة من الفئة I. كابل 1.5 مم².","مفتاحا ذهاب وإياب موصولان بسلكين (برتقالي). الطور يصل إلى مشترك S1 ومشترك S2 يذهب إلى المصباح. كابل 1.5 مم².","مفتاح مزدوج يتحكم في مصباحين أو مجموعتين مستقلتين. طور لكل تحكم ومحايد مشترك.","الأزرار (BP1 وBP2 على التوازي) تغذي ملف A1-A2 للتيليروبتور ويقوم ملامسه بتشغيل المصباح. عدد غير محدود من الأزرار على التوازي.","دائرة المقابس: قاطع 20 أمبير + تفاضلي 30 مللي أمبير، كابل 2.5 مم² مع أرضي (PE)، 8 مقابس كحد أقصى للدائرة.","دائرة القدرة: فاصل Q1 وملامس KM1 ومرحل حراري F1 ومحرك. دائرة التحكم: إيقاف S0 (مغلق) وتشغيل S1 (مفتوح) مع تثبيت ذاتي بملامس KM1 وملامس المرحل F1. احترم جهد الملف."],
+disc:"النتائج إرشادية. المعايير المرجعية: NF C 15-100 وIEC 60364 (التركيبات) وIEC 60947 (المعدات) وIEC 60898 (القواطع) والمعايير المغربية وقواعد الموزع المعمول بها. يجب أن ينجز كل تركيب ويصادق عليه كهربائي مؤهل.",
+gd:"<div class='card' style='border-color:var(--bad)'><h3>⚠ السلامة</h3><ul><li>القواعد الخمس: الفصل، القفل، التحقق من انعدام الجهد، التأريض عند اللزوم، تحديد المنطقة.</li><li>اشتغل بدون جهد وبأدوات معزولة ومعدات حماية وتأهيل مناسب.</li><li>لا تعطل أي حماية. سقوط الحماية عَرَض فابحث عن السبب.</li></ul></div><div class='card'><h3>🏠 السكني</h3><ul><li>الإنارة: 1.5 مم² و10 أمبير (16 كحد أقصى). المقابس: 2.5 مم² و20 أمبير.</li><li>لوحة الطبخ: 6 مم² و32 أمبير. سخان الماء وغسالة: دائرة مخصصة 2.5 مم² و20 أمبير.</li><li>تفاضلي 30 مللي أمبير (نوع A) للمقابس والأماكن الرطبة، والأرضي إلزامي.</li><li>علّم كل دائرة في اللوحة واترك مكاناً احتياطياً.</li></ul></div><div class='card'><h3>🏭 الصناعي</h3><ul><li>مخرج محرك: فاصل + حماية من القصر (قاطع أو مصهر aM) + ملامس + مرحل حراري.</li><li>تحقق من نظام التأريض (TT وTN وIT) ودرجة IP والحرارة المحيطة.</li><li>وازن الأطوار وصحح cos φ عند الحاجة.</li></ul></div><div class='card'><h3>🛡 الحمايات</h3><ul><li>حراري (شريحة ثنائية): الحمل الزائد. مغناطيسي: القصر. المنحنيات: B ‏3–5 × In وC ‏5–10 × In وD ‏10–20 × In.</li><li>المصاهر: gG (الكابلات) وaM (المحركات، القصر فقط).</li><li>التفاضلي: 30 مللي أمبير للأشخاص و300 للحريق/العام. اختبر زر الاختبار شهرياً.</li></ul></div><div class='card'><h3>🔧 الإصلاح</h3><ul><li>سقوط القاطع: حمل زائد (قس التيار) أو قصر (افصل الأجهزة).</li><li>سقوط التفاضلي: عيب عزل؛ افصل دائرة دائرة وقس بالميغا أومتر.</li><li>سخونة المحرك: حمل زائد أو طور مفقود أو جهد منخفض أو محمل.</li><li>طقطقة الملامس: جهد ملف ضعيف أو ملامسات بالية.</li><li>وميض المصباح أو سخونة مقبس: وصلة مرتخية، شدّها.</li></ul></div>"});
+{const c0=calc;calc=()=>{c0();calc2()}}
+function calc2(){const t=T[L],mat=$("mat").value;
+ const cl=(x,a,b)=>Math.min(Math.max(x,a),b);
+ const r=C.motor(N("pm")*1000,N("um")||380,cl(N("mcos"),.01,1),cl(N("mef")/100,.05,1)),sc=C.sByI(mat,r.I,3);
+ $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,r.B||"—","A")+row(t.mfu,r.B||"—","A")+row(t.mcb,sc||"—","mm²");
+ const d=N("lm")*N("cu2")*N("mf");
+ if(d>0&&N("sa")>0){const n=C.lamps(+$("rm").value,N("sa"),N("lm"),N("cu2"),N("mf")),W=n*N("lw");
+ $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/220),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"")}
+ drawSc()}
+function fillSc(){const o=$("sc"),i=o.selectedIndex<0?0:o.selectedIndex;o.innerHTML=T[L].sn.map((x,j)=>`<option value="${j}">${x}</option>`).join("");o.selectedIndex=i}
+function drawSc(){const i=+$("sc").value||0;$("o8").innerHTML=`<svg viewBox="0 0 330 190" width="100%" style="max-width:440px;display:block;margin:auto;color:var(--tx)">${SC[i]}</svg><p class="note">${T[L].sd[i]}</p>`}
+/*END2*/
+/*C3*/
+C.qc=(P,c1,c2)=>P*(Math.tan(Math.acos(c1))-Math.tan(Math.acos(c2)));
+const CVK=[0.7355,0.7457];
+C.conv=(v,m)=>m==0?v*CVK[0]:m==1?v*CVK[1]:m==2?v/CVK[0]:v/CVK[1];
+const CT=[[1.5,10,"16 A max"],[2.5,20,""],[2.5,20,""],[2.5,20,""],[6,32,""],[2.5,20,""]];
+/*E3*/
+const sT=(x,y,w,t)=>bx(x,y,w,20,t);
+SC.push(
+ ln(40,10,40,25)+ln(60,10,60,25)+ln(80,10,80,25)+tx(34,8,"L1")+tx(54,8,"L2")+tx(74,8,"L3")+bx(25,25,70,20,"Q1")+ln(40,45,40,70)+ln(60,45,60,70)+ln(80,45,80,70)+bx(25,70,70,20,"KM1")+ln(40,90,40,115)+ln(60,90,60,115)+ln(80,90,80,115)+bx(25,115,70,20,"F1")+ln(40,135,40,150)+ln(60,135,60,150)+ln(80,135,80,150)+`<rect x="25" y="150" width="70" height="26" rx="5" fill="var(--card)" stroke="currentColor" stroke-width="2"/>`+tx(46,168,"M 3~")+ln(150,60,150,100)+bx(120,100,60,20,"KM2 Δ")+bx(200,100,60,20,"KM3 Y")+ln(80,57,230,57)+ln(230,57,230,100)+ln(150,120,150,163)+ln(95,163,150,163)+ln(230,120,230,140)+ln(150,140,230,140),
+ ln(40,10,40,25)+ln(60,10,60,25)+ln(80,10,80,25)+tx(34,8,"L1")+tx(54,8,"L2")+tx(74,8,"L3")+bx(25,25,70,20,"Q1")+ln(60,45,60,70)+bx(25,70,70,20,"KM1")+ln(60,57,170,57)+ln(170,57,170,70)+bx(135,70,70,20,"KM2")+ln(60,90,60,115)+ln(170,90,170,100)+ln(170,100,60,100)+bx(25,115,70,20,"F1")+ln(60,135,60,149)+`<circle cx="60" cy="165" r="16" fill="var(--card)" stroke="currentColor" stroke-width="2"/>`+tx(48,169,"M3~"),
+ bx(110,5,100,24,"Disj. 40A")+ln(160,29,160,44)+bx(95,44,130,24,"DDR 63A 30mA")+ln(160,68,160,90)+ln(34,90,294,90)+[5,70,135,200,265].map((x,j)=>ln(x+29,90,x+29,118)+bx(x,118,58,26,["10A","20A","20A","20A","32A"][j])+tx(x+8,160,["1,5","2,5","2,5","2,5","6"][j]+"mm²")).join("")
+);
+Object.assign(T.fr,{vp:"Tension usuelle",tc:"Correction du cos φ",pq:"Puissance active (kW)",c1:"cos φ actuel",c2:"cos φ visé",qcl:"Batterie de condensateurs",ib:"Courant avant",ia:"Courant après",gn:"Courant économisé",
+cn2:"Qc = P × (tan φ1 − tan φ2). Réduit le courant appelé et évite les pénalités d’énergie réactive. Choisissez le gradin de condensateurs standard immédiatement supérieur.",
+tcv:"Conversion CV / HP / kW",cvv:"Valeur",cvm:"Conversion",k1:"CV → kW",k2:"HP → kW",k3:"kW → CV",k4:"kW → HP",
+tct:"Circuits types (résidentiel)",cty:"Circuit",ct0:"Éclairage",ct1:"Prises 16 A",ct2:"Chauffe-eau",ct3:"Lave-linge / lave-vaisselle",ct4:"Plaque de cuisson",ct5:"Climatiseur (suivre la notice)",
+ctn:"Valeurs usuelles de la NF C 15-100 pour câble cuivre. Pour un climatiseur ou un appareil spécial, suivez la notice du fabricant.",cbk:"Calibre disjoncteur",fg:"Fusible gG (calibre)",
+sn2:["Étoile-triangle (puissance)","Inversion de sens de rotation","Tableau résidentiel (unifilaire)"],
+sd2:["KM1 alimente le moteur ; KM3 couple en étoile au démarrage. Après la temporisation, KM3 s’ouvre et KM2 couple en triangle. KM2 et KM3 ne doivent jamais être fermés ensemble : verrouillage obligatoire. Moteur 380 V en triangle avec 6 bornes.","KM1 sens avant, KM2 sens arrière : deux phases sont croisées. Verrouillage mécanique et électrique obligatoire pour que KM1 et KM2 ne soient jamais fermés ensemble (court-circuit). Arrêtez le moteur avant d’inverser.","Disjoncteur de branchement, différentiel 30 mA, puis les départs : éclairage 10 A / 1,5 mm², prises 20 A / 2,5 mm² (x3 : prises, chauffe-eau, lave-linge), cuisson 32 A / 6 mm². Prévoyez une réserve de place."]});
+Object.assign(T.ar,{vp:"الجهد المعتاد",tc:"تصحيح cos φ",pq:"القدرة الفعالة (كيلوواط)",c1:"cos φ الحالي",c2:"cos φ المطلوب",qcl:"بطارية المكثفات",ib:"التيار قبل",ia:"التيار بعد",gn:"التيار المُوفَّر",
+cn2:"Qc = P × (tan φ1 − tan φ2). يخفض التيار المسحوب ويتجنب غرامات الطاقة غير الفعالة. اختر أقرب درجة مكثفات قياسية أعلى.",
+tcv:"تحويل CV / HP / كيلوواط",cvv:"القيمة",cvm:"التحويل",k1:"CV ← kW",k2:"HP ← kW",k3:"kW ← CV",k4:"kW ← HP",
+tct:"دوائر نموذجية (سكني)",cty:"الدائرة",ct0:"الإنارة",ct1:"مقابس 16 أمبير",ct2:"سخان الماء",ct3:"غسالة / غسالة أواني",ct4:"لوحة الطبخ",ct5:"مكيف (حسب دليل الجهاز)",
+ctn:"قيم معتادة وفق NF C 15-100 لكابل نحاسي. للمكيف أو الأجهزة الخاصة اتبع دليل الصانع.",cbk:"عيار القاطع",fg:"مصهر gG (العيار)",
+sn2:["نجمة-مثلث (القدرة)","عكس اتجاه الدوران","لوحة سكنية (خط واحد)"],
+sd2:["KM1 يغذي المحرك وKM3 يربط بنجمة عند الإقلاع. بعد المؤقت يفتح KM3 ويربط KM2 بمثلث. يجب ألا يُغلق KM2 وKM3 معاً: القفل إلزامي. محرك 380 فولت بمثلث بـ 6 أطراف.","KM1 اتجاه أمامي وKM2 اتجاه عكسي: يتم تبديل طورين. قفل ميكانيكي وكهربائي إلزامي حتى لا يغلق KM1 وKM2 معاً (قصر). أوقف المحرك قبل العكس.","قاطع رئيسي، تفاضلي 30 مللي أمبير، ثم المخارج: إنارة 10 أمبير / 1.5 مم²، مقابس 20 أمبير / 2.5 مم² (×3: مقابس، سخان، غسالة)، طبخ 32 أمبير / 6 مم². اترك مكاناً احتياطياً."]});
+T.fr.sn.push(...T.fr.sn2);T.fr.sd.push(...T.fr.sd2);T.ar.sn.push(...T.ar.sn2);T.ar.sd.push(...T.ar.sd2);
+T.fr.tabs.push("Outils");T.ar.tabs.push("أدوات");
+{const c1=calc;calc=()=>{c1();calc3()}}
+function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
+ const uu=String(N("u"));[...$("up").options].forEach(o=>o.selected=o.value==uu);
+ const In=C.breaker(N("i4"));$("o4").innerHTML+=row(t.fg,In||">250","A");
+ const P=N("pq"),a=cl(N("c1"),.1,1),b=cl(N("c2"),.1,1);
+ if(P>0&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
+ $("o10a").innerHTML=row(t.qcl,f(q),"kvar","big")+row(t.ib,f(i1),"A")+row(t.ia,f(i2),"A")+row(t.gn,f(i1-i2),"A")}
+ else $("o10a").innerHTML="";
+ const m=+$("cvm").value,r=C.conv(N("cvv"),m);$("o10b").innerHTML=row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big");
+ const c=CT[+$("ct").value];$("o10c").innerHTML=row(t.sec,f(c[0],1),"mm²","big")+row(t.cbk,c[1],"A"+(c[2]?" ("+c[2]+")":""))+row(t.rcd,"30","mA")}
+let L="fr";const $=i=>document.getElementById(i),N=i=>parseFloat($(i).value)||0;
+const f=(x,d=2)=>x.toLocaleString(L=="ar"?"en-US":"fr-FR",{maximumFractionDigits:d});
+const row=(l,v,u="",c="")=>`<div class="r ${c}"><span>${l}</span><b>${v} ${u}</b></div>`;
+function sys(){return +$("sys").value}
+function calc(){const t=T[L],s=sys(),U=N("u"),c=Math.min(Math.max(N("cos"),0.01),1),mat=$("mat").value;
+ $("vl").textContent=$("mode").value=="pi"?t.vP:t.vI;
+ let h="";
+ if($("mode").value=="pi"){const P=N("val")*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
+ else{const P=C.P(s,U,N("val"),c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
+ $("o0").innerHTML=h;
+ const kw=N("cw")/1000,e=kw*N("ch"),m=e*N("cd"),p=N("cp");
+ $("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*p),"DH","big")+row(t.cy,f(m*p*12),"DH");
+ const I2=N("i2"),L2=N("l2"),pc=+$("m2").value,a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);
+ let r="";
+ if(a.S==null||b==null)r=row(t.sf,t.none,"","big");
+ else{const S=Math.max(a.S,b);r=row(t.sf,f(S,1),"mm²","big")+row(t.sv,f(a.need)+" → "+a.S,"mm²")+row(t.si,b,"mm²")+row(t.real,f(C.dU(mat,s,I2,L2,S)/U*100)+" %","")}
+ $("o2").innerHTML=r;
+ const S3=+$("s3").value,d=C.dU(mat,s,N("i3"),N("l3"),S3),pp=d/U*100,az=C.amp(mat,S3,s);
+ $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");
+ const I4=N("i4"),In=C.breaker(I4),sc=In?C.sByI("cu",In,s):null;
+ $("o4").innerHTML=row(t.br,In?In:">250","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA");
+}
+function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
+ $("lb").textContent=L=="fr"?"العربية":"Français";
+ $("nav").innerHTML=t.tabs.map((x,j)=>`<button data-j="${j}">${x}</button>`).join("");
+ document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>show(+b.dataset.j));
+ $("o5").innerHTML=t.fm;$("o9").innerHTML=t.gd;fillSc();show(cur);calc()}
+let cur=0;
+function show(j){cur=j;document.querySelectorAll(".panel").forEach((p,x)=>p.classList.toggle("on",x==j));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
+function secs(){const mat=$("mat").value,o=$("s3"),old=o.value;o.innerHTML=A[mat].S.map(x=>`<option>${x}</option>`).join("");if(A[mat].S.includes(+old))o.value=old;else o.value=A[mat].S[Math.min(3,A[mat].S.length-1)]}
+document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",()=>{if(e.id=="sys"){$("u").value=sys()==1?220:380}if(e.id=="up")$("u").value=$("up").value;if(e.id=="mat")secs();calc()}));
+$("lb").onclick=()=>{L=L=="fr"?"ar":"fr";lang()};
+secs();lang();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
