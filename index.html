@@ -111,6 +111,27 @@ ul{padding-inline-start:20px;margin:6px 0}
 <div class="res" id="o10b"></div></div>
 <div class="card"><h3 data-i="tct"></h3><label data-i="cty"></label><select id="ct"><option value="0" data-i="ct0"></option><option value="1" data-i="ct1"></option><option value="2" data-i="ct2"></option><option value="3" data-i="ct3"></option><option value="4" data-i="ct4"></option><option value="5" data-i="ct5"></option></select>
 <div class="res" id="o10c"></div><div class="note" data-i="ctn"></div></div>
+<div class="card"><h3 data-i="tohm"></h3><div class="g">
+<div><label data-i="ou"></label><input id="ou" type="number" inputmode="decimal" value="230"></div>
+<div><label data-i="oi"></label><input id="oi" type="number" inputmode="decimal" value="5"></div>
+<div><label data-i="orr"></label><input id="orr" type="number" inputmode="decimal" placeholder="—"></div></div>
+<div class="res" id="o10d"></div><div class="note" data-i="ohn"></div></div>
+<div class="card"><h3 data-i="tcap"></h3><div class="g">
+<div><label data-i="cq"></label><input id="cq" type="number" inputmode="decimal" value="5"></div>
+<div><label data-i="cuu"></label><input id="cuu" type="number" inputmode="decimal" value="230"></div>
+<div><label data-i="cf"></label><input id="cf" type="number" inputmode="decimal" value="50"></div>
+<div><label data-i="cph"></label><select id="cph"><option value="1" data-i="cmono"></option><option value="3" data-i="ctri"></option></select></div>
+<div><label data-i="cconn"></label><select id="cconn"><option value="d" data-i="cdelta"></option><option value="y" data-i="cstar"></option></select></div></div>
+<div class="res" id="o10e"></div><div class="note" data-i="capn"></div></div>
+<div class="card"><h3 data-i="tground"></h3><div class="g">
+<div><label data-i="rhoearth"></label><input id="erho" type="number" inputmode="decimal" value="100"></div>
+<div><label data-i="rodlen"></label><input id="elen" type="number" inputmode="decimal" value="2"></div>
+<div><label data-i="roddia"></label><input id="edia" type="number" inputmode="decimal" value="16"></div></div>
+<div class="res" id="o10f"></div><div class="note" data-i="earthn"></div></div>
+<div class="card"><h3 data-i="tshort"></h3><div class="g">
+<div><label data-i="shortu"></label><input id="su" type="number" inputmode="decimal" value="230"></div>
+<div><label data-i="shortz"></label><input id="sz" type="number" inputmode="decimal" step="0.01" value="0.5"></div></div>
+<div class="res" id="o10g"></div><div class="note" data-i="shortn"></div></div>
 </section>
 <section class="panel" id="p9"><div id="o9"></div></section>
 
@@ -225,19 +246,27 @@ Object.assign(T.fr,{vp:"Tension usuelle",tc:"Correction du cos φ",pq:"Puissance
 cn2:"Qc = P × (tan φ1 − tan φ2). Réduit le courant appelé et évite les pénalités d’énergie réactive. Choisissez le gradin de condensateurs standard immédiatement supérieur.",
 tcv:"Conversion CV / HP / kW",cvv:"Valeur",cvm:"Conversion",k1:"CV → kW",k2:"HP → kW",k3:"kW → CV",k4:"kW → HP",
 tct:"Circuits types (résidentiel)",cty:"Circuit",ct0:"Éclairage",ct1:"Prises 16 A",ct2:"Chauffe-eau",ct3:"Lave-linge / lave-vaisselle",ct4:"Plaque de cuisson",ct5:"Climatiseur (suivre la notice)",
-ctn:"Valeurs usuelles de la NF C 15-100 pour câble cuivre. Pour un climatiseur ou un appareil spécial, suivez la notice du fabricant.",cbk:"Calibre disjoncteur",fg:"Fusible gG (calibre)",
+ctn:"Valeurs usuelles de la NF C 15-100 pour câble cuivre. Pour un climatiseur ou un appareil spécial, suivez la notice du fabricant.",
+tohm:"Loi d’Ohm et puissance",ou:"Tension U (V)",oi:"Courant I (A)",orr:"Résistance R (Ω)",ohn:"Renseignez deux valeurs parmi U, I et R. La troisième et la puissance P sont calculées. Modèle résistif simple en courant continu ou valeur efficace.",
+tcap:"Dimensionnement théorique d’un condensateur",cq:"Puissance réactive Q (kvar)",cuu:"Tension réseau (V)",cf:"Fréquence (Hz)",cph:"Réseau",cmono:"Monophasé",ctri:"Triphasé",cconn:"Couplage",cdelta:"Triangle",cstar:"Étoile",capn:"Estimation idéale à partir de Q = 2πfCU². En triphasé, la capacité par phase dépend du couplage. Le choix réel exige étude des harmoniques, tension nominale, décharge et protections.",
+tground:"Estimation d’une prise de terre (piquet unique)",rhoearth:"Résistivité du sol ρ (Ω·m)",rodlen:"Longueur du piquet (m)",roddia:"Diamètre (mm)",earthn:"Approximation pour un piquet vertical isolé dans un sol homogène : R ≈ ρ/(2πL) × [ln(4L/d) − 1]. Ce calcul ne remplace pas une mesure au telluromètre ni le contrôle réglementaire.",
+tshort:"Courant de court-circuit présumé (approx.)",shortu:"Tension U (V)",shortz:"Impédance de boucle Z (Ω)",shortn:"Icc ≈ U/Z pour un défaut monophasé simplifié. Le calcul réel doit intégrer l’impédance source, conducteurs, transformateur et conditions de défaut. Ne dimensionnez jamais une protection avec cette seule estimation.",cbk:"Calibre disjoncteur",fg:"Fusible gG (calibre)",
 sn2:["Étoile-triangle (puissance)","Inversion de sens de rotation","Tableau résidentiel (unifilaire)"],
 sd2:["KM1 alimente le moteur ; KM3 couple en étoile au démarrage. Après la temporisation, KM3 s’ouvre et KM2 couple en triangle. KM2 et KM3 ne doivent jamais être fermés ensemble : verrouillage obligatoire. Moteur 380 V en triangle avec 6 bornes.","KM1 sens avant, KM2 sens arrière : deux phases sont croisées. Verrouillage mécanique et électrique obligatoire pour que KM1 et KM2 ne soient jamais fermés ensemble (court-circuit). Arrêtez le moteur avant d’inverser.","Disjoncteur de branchement, différentiel 30 mA, puis les départs : éclairage 10 A / 1,5 mm², prises 20 A / 2,5 mm² (x3 : prises, chauffe-eau, lave-linge), cuisson 32 A / 6 mm². Prévoyez une réserve de place."]});
 Object.assign(T.ar,{vp:"الجهد المعتاد",tc:"تصحيح cos φ",pq:"القدرة الفعالة (كيلوواط)",c1:"cos φ الحالي",c2:"cos φ المطلوب",qcl:"بطارية المكثفات",ib:"التيار قبل",ia:"التيار بعد",gn:"التيار المُوفَّر",
 cn2:"Qc = P × (tan φ1 − tan φ2). يخفض التيار المسحوب ويتجنب غرامات الطاقة غير الفعالة. اختر أقرب درجة مكثفات قياسية أعلى.",
 tcv:"تحويل CV / HP / كيلوواط",cvv:"القيمة",cvm:"التحويل",k1:"CV ← kW",k2:"HP ← kW",k3:"kW ← CV",k4:"kW ← HP",
 tct:"دوائر نموذجية (سكني)",cty:"الدائرة",ct0:"الإنارة",ct1:"مقابس 16 أمبير",ct2:"سخان الماء",ct3:"غسالة / غسالة أواني",ct4:"لوحة الطبخ",ct5:"مكيف (حسب دليل الجهاز)",
-ctn:"قيم معتادة وفق NF C 15-100 لكابل نحاسي. للمكيف أو الأجهزة الخاصة اتبع دليل الصانع.",cbk:"عيار القاطع",fg:"مصهر gG (العيار)",
+ctn:"قيم معتادة وفق NF C 15-100 لكابل نحاسي. للمكيف أو الأجهزة الخاصة اتبع دليل الصانع.",
+tohm:"قانون أوم والقدرة",ou:"الجهد U (فولت)",oi:"التيار I (أمبير)",orr:"المقاومة R (أوم)",ohn:"أدخل قيمتين من U وI وR، وسيتم حساب القيمة الثالثة والقدرة P. نموذج مقاومي مبسط.",
+tcap:"تقدير سعة المكثف",cq:"القدرة غير الفعالة Q (kvar)",cuu:"جهد الشبكة (فولت)",cf:"التردد (Hz)",cph:"الشبكة",cmono:"أحادي الطور",ctri:"ثلاثي الأطوار",cconn:"طريقة الربط",cdelta:"مثلث",cstar:"نجمة",capn:"تقدير نظري بالعلاقة Q = 2πfCU². في الثلاثي تتغير سعة كل مكثف حسب طريقة الربط. الاختيار الفعلي يحتاج دراسة التوافقيات والجهد والحماية والتفريغ.",
+tground:"تقدير مقاومة قطب التأريض (قضيب واحد)",rhoearth:"مقاومية التربة ρ (أوم·متر)",rodlen:"طول القضيب (متر)",roddia:"القطر (مم)",earthn:"تقريب لقضيب عمودي منفرد في تربة متجانسة: R ≈ ρ/(2πL) × [ln(4L/d) − 1]. لا يعوض القياس بجهاز قياس التأريض ولا الفحص حسب المعايير.",
+tshort:"تيار القصر المتوقع (تقريبي)",shortu:"الجهد U (فولت)",shortz:"ممانعة الحلقة Z (أوم)",shortn:"Icc ≈ U/Z لقصر أحادي مبسط. الحساب الحقيقي يجب أن يراعي ممانعة المصدر والأسلاك والمحول وظروف العطل. لا تختَر جهاز الحماية اعتماداً على هذا التقدير وحده.",cbk:"عيار القاطع",fg:"مصهر gG (العيار)",
 sn2:["نجمة-مثلث (القدرة)","عكس اتجاه الدوران","لوحة سكنية (خط واحد)"],
 sd2:["KM1 يغذي المحرك وKM3 يربط بنجمة عند الإقلاع. بعد المؤقت يفتح KM3 ويربط KM2 بمثلث. يجب ألا يُغلق KM2 وKM3 معاً: القفل إلزامي. محرك 380 فولت بمثلث بـ 6 أطراف.","KM1 اتجاه أمامي وKM2 اتجاه عكسي: يتم تبديل طورين. قفل ميكانيكي وكهربائي إلزامي حتى لا يغلق KM1 وKM2 معاً (قصر). أوقف المحرك قبل العكس.","قاطع رئيسي، تفاضلي 30 مللي أمبير، ثم المخارج: إنارة 10 أمبير / 1.5 مم²، مقابس 20 أمبير / 2.5 مم² (×3: مقابس، سخان، غسالة)، طبخ 32 أمبير / 6 مم². اترك مكاناً احتياطياً."]});
 T.fr.sn.push(...T.fr.sn2);T.fr.sd.push(...T.fr.sd2);T.ar.sn.push(...T.ar.sn2);T.ar.sd.push(...T.ar.sd2);
 T.fr.tabs.push("Outils");T.ar.tabs.push("أدوات");
-{const c1=calc;calc=()=>{c1();calc3()}}
+{const c1=calc;calc=()=>{c1();calc3();calc4()}}
 function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
  const uu=String(N("u"));[...$("up").options].forEach(o=>o.selected=o.value==uu);
  const In=C.breaker(N("i4"));$("o4").innerHTML+=row(t.fg,In||">250","A");
@@ -247,6 +276,26 @@ function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.
  else $("o10a").innerHTML="";
  const m=+$("cvm").value,r=C.conv(N("cvv"),m);$("o10b").innerHTML=row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big");
  const c=CT[+$("ct").value];$("o10c").innerHTML=row(t.sec,f(c[0],1),"mm²","big")+row(t.cbk,c[1],"A"+(c[2]?" ("+c[2]+")":""))+row(t.rcd,"30","mA")}
+function calc4(){
+ const t=T[L],u=N("ou"),i=N("oi"),rr=N("orr");
+ let R=0,I=0,U=0,valid=false;
+ if(u>0&&i>0){U=u;I=i;R=U/I;valid=true}
+ else if(u>0&&rr>0){U=u;R=rr;I=U/R;valid=true}
+ else if(i>0&&rr>0){I=i;R=rr;U=I*R;valid=true}
+ $("o10d").innerHTML=valid?row("U",f(U),"V")+row("I",f(I),"A")+row("R",f(R),"Ω")+row("P",f(U*I),"W","big"):"<div class='note'>"+t.ohn+"</div>";
+ const q=N("cq")*1000,uc=N("cuu"),hz=N("cf"),ph=+$("cph").value,conn=$("cconn").value;
+ if(q>0&&uc>0&&hz>0){
+   let Cph=ph==1?q/(2*Math.PI*hz*uc*uc):(conn=="d"?q/(3*2*Math.PI*hz*uc*uc):q/(2*Math.PI*hz*uc*uc));
+   $("o10e").innerHTML=row("C / phase",f(Cph*1e6,1),"µF","big")+row("Q",f(q/1000),"kvar")+row("f",f(hz),"Hz");
+ } else $("o10e").innerHTML="";
+ const rho=N("erho"),len=N("elen"),dia=N("edia")/1000;
+ if(rho>0&&len>0&&dia>0&&4*len/dia>1){
+   const re=rho/(2*Math.PI*len)*(Math.log(4*len/dia)-1);
+   $("o10f").innerHTML=row("R terre estimée",f(re),"Ω","big");
+ } else $("o10f").innerHTML="";
+ const su=N("su"),z=N("sz");
+ $("o10g").innerHTML=su>0&&z>0?row("Icc ≈ U / Z",f(su/z),"A","big"):"";
+}
 let L="fr";const $=i=>document.getElementById(i),N=i=>parseFloat($(i).value)||0;
 const f=(x,d=2)=>x.toLocaleString(L=="ar"?"en-US":"fr-FR",{maximumFractionDigits:d});
 const row=(l,v,u="",c="")=>`<div class="r ${c}"><span>${l}</span><b>${v} ${u}</b></div>`;
@@ -276,7 +325,7 @@ function lang(){const t=T[L];document.documentElement.lang=L;document.documentEl
  document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>show(+b.dataset.j));
  $("o5").innerHTML=t.fm;$("o9").innerHTML=t.gd;fillSc();show(cur);calc()}
 let cur=0;
-function show(j){cur=j;document.querySelectorAll(".panel").forEach((p,x)=>p.classList.toggle("on",x==j));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
+function show(j){cur=j;document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id==="p"+j));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
 function secs(){const mat=$("mat").value,o=$("s3"),old=o.value;o.innerHTML=A[mat].S.map(x=>`<option>${x}</option>`).join("");if(A[mat].S.includes(+old))o.value=old;else o.value=A[mat].S[Math.min(3,A[mat].S.length-1)]}
 document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",()=>{if(e.id=="sys"){$("u").value=sys()==1?220:380}if(e.id=="up")$("u").value=$("up").value;if(e.id=="mat")secs();calc()}));
 $("lb").onclick=()=>{L=L=="fr"?"ar":"fr";lang()};
