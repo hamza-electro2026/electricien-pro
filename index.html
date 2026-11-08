@@ -267,9 +267,14 @@ disc:"النتائج إرشادية. المعايير المرجعية: NF C 15-
 gd:"<div class='card' style='border-color:var(--bad)'><h3>⚠ السلامة</h3><ul><li>القواعد الخمس: الفصل، القفل، التحقق من انعدام الجهد، التأريض عند اللزوم، تحديد المنطقة.</li><li>اشتغل بدون جهد وبأدوات معزولة ومعدات حماية وتأهيل مناسب.</li><li>لا تعطل أي حماية. سقوط الحماية عَرَض فابحث عن السبب.</li></ul></div><div class='card'><h3>🏠 السكني</h3><ul><li>الإنارة: 1.5 مم² و10 أمبير (16 كحد أقصى). المقابس: 2.5 مم² و20 أمبير.</li><li>لوحة الطبخ: 6 مم² و32 أمبير. سخان الماء وغسالة: دائرة مخصصة 2.5 مم² و20 أمبير.</li><li>تفاضلي 30 مللي أمبير (نوع A) للمقابس والأماكن الرطبة، والأرضي إلزامي.</li><li>علّم كل دائرة في اللوحة واترك مكاناً احتياطياً.</li></ul></div><div class='card'><h3>🏭 الصناعي</h3><ul><li>مخرج محرك: فاصل + حماية من القصر (قاطع أو مصهر aM) + ملامس + مرحل حراري.</li><li>تحقق من نظام التأريض (TT وTN وIT) ودرجة IP والحرارة المحيطة.</li><li>وازن الأطوار وصحح cos φ عند الحاجة.</li></ul></div><div class='card'><h3>🛡 الحمايات</h3><ul><li>حراري (شريحة ثنائية): الحمل الزائد. مغناطيسي: القصر. المنحنيات: B ‏3–5 × In وC ‏5–10 × In وD ‏10–20 × In.</li><li>المصاهر: gG (الكابلات) وaM (المحركات، القصر فقط).</li><li>التفاضلي: 30 مللي أمبير للأشخاص و300 للحريق/العام. اختبر زر الاختبار شهرياً.</li></ul></div><div class='card'><h3>🔧 الإصلاح</h3><ul><li>سقوط القاطع: حمل زائد (قس التيار) أو قصر (افصل الأجهزة).</li><li>سقوط التفاضلي: عيب عزل؛ افصل دائرة دائرة وقس بالميغا أومتر.</li><li>سخونة المحرك: حمل زائد أو طور مفقود أو جهد منخفض أو محمل.</li><li>طقطقة الملامس: جهد ملف ضعيف أو ملامسات بالية.</li><li>وميض المصباح أو سخونة مقبس: وصلة مرتخية، شدّها.</li></ul></div>"});
 {const c0=calc;calc=()=>{c0();calc2()}}
 function calc2(){const t=T[L],mat=$("mat").value;
+ const pm=N("pm"),um=N("um"),mc=N("mcos"),me=N("mef");
+ const invalid=pm<=0||um<=0||mc<=0||mc>1||me<=0||me>100;
+ if(invalid){$("o6").innerHTML=`<div class="note">${L==="ar"?"يرجى إدخال قدرة وجهد أكبر من صفر، ومعامل قدرة بين 0 و1، ومردود بين 0 و100%.":"Saisissez une puissance et une tension positives, cos φ entre 0 et 1 et un rendement entre 0 et 100 %."}</div>`;}
+ else {
  const cl=(x,a,b)=>Math.min(Math.max(x,a),b);
- const r=C.motor(N("pm")*1000,N("um")||380,cl(N("mcos"),.01,1),cl(N("mef")/100,.05,1)),sc=C.sByI(mat,r.I,3);
+ const r=C.motor(pm*1000,um,cl(mc,.01,1),cl(me/100,.05,1)),sc=C.sByI(mat,r.I,3);
  $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,"—","")+row(t.mfu,"—","")+row(t.mcb,sc||"—","mm²");
+ }
  const d=N("lm")*N("cu2")*N("mf");
  if(d>0&&N("sa")>0){const n=C.lamps(+$("rm").value,N("sa"),N("lm"),N("cu2"),N("mf")),W=n*N("lw");
  $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/220),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"")}
