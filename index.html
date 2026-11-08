@@ -363,23 +363,31 @@ let L="fr";const $=i=>document.getElementById(i),N=i=>parseFloat($(i).value)||0;
 const f=(x,d=2)=>x.toLocaleString(L=="ar"?"en-US":"fr-FR",{maximumFractionDigits:d});
 const row=(l,v,u="",c="")=>`<div class="r ${c}"><span>${l}</span><b>${v} ${u}</b></div>`;
 function sys(){return +$("sys").value}
-function calc(){const t=T[L],s=sys(),U=N("u"),c=Math.min(Math.max(N("cos"),0.01),1),mat=$("mat").value;
+function calc(){const t=T[L],s=sys(),U=N("u"),c=N("cos"),mat=$("mat").value;
+ const bad=(ar,fr)=>`<div class="note">${L==="ar"?ar:fr}</div>`;
  $("vl").textContent=$("mode").value=="pi"?t.vP:t.vI;
- let h="";
- if($("mode").value=="pi"){const P=N("val")*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
- else{const P=C.P(s,U,N("val"),c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
- $("o0").innerHTML=h;
- const kw=N("cw")/1000,e=kw*N("ch"),m=e*N("cd"),p=N("cp");
- $("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*p),"DH","big")+row(t.cy,f(m*p*12),"DH");
- const I2=N("i2"),L2=N("l2"),pc=+$("m2").value,a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);
- let r="";
+ const val=N("val"),validPower=val>0,validCos=c>0&&c<=1,validU=U>0;
+ if(!validPower||!validCos||!validU){$("o0").innerHTML=bad("أدخل قيمة أكبر من صفر، وجهداً صحيحاً، ومعامل قدرة بين 0 و1.","Saisissez une valeur positive, une tension valide et cos φ entre 0 et 1.");}
+ else{let h="";
+ if($("mode").value=="pi"){const P=val*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
+ else{const P=C.P(s,U,val,c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
+ $("o0").innerHTML=h;}
+ const kw=N("cw")/1000,hours=N("ch"),days=N("cd"),price=N("cp");
+ if(kw>0&&hours>0&&days>0&&price>=0){const e=kw*hours,m=e*days;$("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*price),"DH","big")+row(t.cy,f(m*price*12),"DH");}
+ else $("o1").innerHTML=bad("أدخل قدرة واستهلاكاً ومدة صحيحة، والثمن لا يمكن أن يكون سالباً.","Saisissez une puissance et des durées positives ; le tarif ne peut pas être négatif.");
+ const I2=N("i2"),L2=N("l2"),pc=+$("m2").value;
+ if(validU&&I2>0&&L2>0&&pc>0){const a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);let r="";
  if(a.S==null||b==null)r=row(t.sf,t.none,"","big");
  else{const S=Math.max(a.S,b);r=row(t.sf,f(S,1),"mm²","big")+row(t.sv,f(a.need)+" → "+a.S,"mm²")+row(t.si,b,"mm²")+row(t.real,f(C.dU(mat,s,I2,L2,S)/U*100)+" %","")}
- $("o2").innerHTML=r;
- const S3=+$("s3").value,d=C.dU(mat,s,N("i3"),N("l3"),S3),pp=d/U*100,az=C.amp(mat,S3,s);
- $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");
- const I4=N("i4"),In=I4>0?C.breaker(I4):null,sc=In?C.sByI(mat,In,s):null;
- $("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");
+ $("o2").innerHTML=r;}
+ else $("o2").innerHTML=bad("أدخل جهداً وتياراً ومسافة أكبر من صفر.","Saisissez une tension, un courant et une longueur strictement positifs.");
+ const I3=N("i3"),L3=N("l3"),S3=+$("s3").value;
+ if(validU&&I3>0&&L3>0&&S3>0){const d=C.dU(mat,s,I3,L3,S3),pp=d/U*100,az=C.amp(mat,S3,s);
+ $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");}
+ else $("o3").innerHTML=bad("أدخل جهداً وتياراً ومسافة ومقطعاً صالحاً أكبر من صفر.","Saisissez une tension, un courant, une longueur et une section valides.");
+ const I4=N("i4");
+ if(I4>0){const In=C.breaker(I4),sc=In?C.sByI(mat,In,s):null;$("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");}
+ else $("o4").innerHTML=bad("أدخل تياراً أكبر من صفر.","Saisissez un courant strictement positif.");
 }
 function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
