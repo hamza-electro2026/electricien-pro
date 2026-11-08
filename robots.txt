@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hamza-electro2026.github.io/electricien-pro/sitemap.xml
