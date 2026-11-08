@@ -272,7 +272,7 @@ function calc2(){const t=T[L],mat=$("mat").value;
  $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,"—","")+row(t.mfu,"—","")+row(t.mcb,sc||"—","mm²");
  const d=N("lm")*N("cu2")*N("mf");
  if(d>0&&N("sa")>0){const n=C.lamps(+$("rm").value,N("sa"),N("lm"),N("cu2"),N("mf")),W=n*N("lw");
- $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/(sys()==1?N("u"):N("u")/Math.sqrt(3))),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"")}
+ $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/(sys()==1?N("u"):N("u")/Math.sqrt(3))),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/(0.8*10*(sys()==1?N("u"):N("u")/Math.sqrt(3))))),"")}
  drawSc()}
 function fillSc(){const o=$("sc"),i=o.selectedIndex<0?0:o.selectedIndex;o.innerHTML=T[L].sn.map((x,j)=>`<option value="${j}">${x}</option>`).join("");o.selectedIndex=i}
 function drawSc(){const i=+$("sc").value||0;$("o8").innerHTML=`<svg viewBox="0 0 330 190" width="100%" style="max-width:440px;display:block;margin:auto;color:var(--tx)">${SC[i]}</svg><p class="note">${T[L].sd[i]}</p>`}
