@@ -13,6 +13,7 @@ Application web progressive (PWA) de calculs électriques, disponible en frança
 - Correction théorique du facteur de puissance et conversion CV / HP / kW.
 - Circuits résidentiels types et schémas électriques pédagogiques.
 - Loi d'Ohm, estimation de capacité de condensateurs, approximation d'une prise de terre et courant de court-circuit simplifié.
+- Courant nominal théorique au primaire et secondaire des transformateurs monophasés et triphasés.
 - Installation sur téléphone et utilisation hors ligne après chargement.
 
 ## Sécurité et limites
