@@ -271,13 +271,16 @@ function calc2(){const t=T[L],mat=$("mat").value;
  const invalid=pm<=0||um<=0||mc<=0||mc>1||me<=0||me>100;
  if(invalid){$("o6").innerHTML=`<div class="note">${L==="ar"?"يرجى إدخال قدرة وجهد أكبر من صفر، ومعامل قدرة بين 0 و1، ومردود بين 0 و100%.":"Saisissez une puissance et une tension positives, cos φ entre 0 et 1 et un rendement entre 0 et 100 %."}</div>`;}
  else {
- const cl=(x,a,b)=>Math.min(Math.max(x,a),b);
- const r=C.motor(pm*1000,um,cl(mc,.01,1),cl(me/100,.05,1)),sc=C.sByI(mat,r.I,3);
+ const r=C.motor(pm*1000,um,mc,me/100),sc=C.sByI(mat,r.I,3);
  $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,"—","")+row(t.mfu,"—","")+row(t.mcb,sc||"—","mm²");
  }
- const d=N("lm")*N("cu2")*N("mf");
- if(d>0&&N("sa")>0){const n=C.lamps(+$("rm").value,N("sa"),N("lm"),N("cu2"),N("mf")),W=n*N("lw");
- $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/220),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"")}
+ const area=N("sa"),lm=N("lm"),lw=N("lw"),cu=N("cu2"),mf=N("mf"),room=+ $("rm").value;
+ if(area>0&&lm>0&&lw>0&&cu>0&&mf>0&&room>0){
+ const n=C.lamps(room,area,lm,cu,mf),W=n*lw;
+ $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/220),"A")+row(t.dn,f(W/area),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"");
+ }else{
+ $("o7").innerHTML=`<div class="note">${L==="ar"?"أدخل مساحة وتدفقاً ضوئياً وقدرة المصباح ومعاملات صحيحة أكبر من صفر.":"Saisissez une surface, un flux, une puissance de lampe et des facteurs strictement positifs."}</div>`;
+ }
  drawSc()}
 function fillSc(){const o=$("sc"),i=o.selectedIndex<0?0:o.selectedIndex;o.innerHTML=T[L].sn.map((x,j)=>`<option value="${j}">${x}</option>`).join("");o.selectedIndex=i}
 function drawSc(){const i=+$("sc").value||0;$("o8").innerHTML=`<svg viewBox="0 0 330 190" width="100%" style="max-width:440px;display:block;margin:auto;color:var(--tx)">${SC[i]}</svg><p class="note">${T[L].sd[i]}</p>`}
