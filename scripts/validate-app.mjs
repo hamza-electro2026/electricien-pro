@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
-const scripts = [...html.matchAll(/<script([^>]*)>([\\s\\S]*?)<\\/script>/gi)]
-  .filter(([, attrs, body]) => body.trim() && !/application\\/ld\\+json/i.test(attrs))
+const scripts = [...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)]
+  .filter(([, attrs, body]) => body.trim() && !/application\/ld\\+json/i.test(attrs))
   .map(([, , body]) => body);
 
 assert.ok(scripts.length > 0, "No executable inline JavaScript found");
 for (const source of scripts) new Function(source);
 
-const app = scripts.join("\\n");
+const app = scripts.join("\n");
 assert.ok(app.includes('mvolt:"Tension entre phases'), "French three-phase motor voltage label missing");
 assert.ok(app.includes('mvolt:"الجهد بين الأطوار'), "Arabic three-phase motor voltage label missing");
 assert.ok(app.includes('Math.sqrt(3)*N("u")'), "Balanced three-phase lighting current formula missing");
