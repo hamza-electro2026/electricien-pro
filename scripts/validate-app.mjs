@@ -123,3 +123,9 @@ assert.ok(html.includes('href="calculs-pratiques.html"'), "Homepage must link to
 assert.ok(readFileSync(new URL("../privacy.html", import.meta.url), "utf8").includes("ne contient pas de code publicitaire"), "Privacy policy must accurately disclose that ads are not active yet");
 
 console.log("PASS: public pages, bilingual content, canonical links, sitemap, and monetization disclosure.");
+
+const serviceWorker = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
+for (const path of ["about.html", "guide.html", "calculs-pratiques.html", "guide-installation.html", "privacy.html", "contact.html"]) {
+  assert.ok(serviceWorker.includes(`"${path}"`), `Service worker must cache ${path} for offline reading`);
+}
+assert.ok(serviceWorker.includes('const V="ep-v8"'), "Service worker cache version must change when the offline file list changes");
