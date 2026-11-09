@@ -50,7 +50,7 @@ const coreMatch = app.match(/\/\*CORE\*\/([\s\S]*?)\/\*END\*\//);
 assert.ok(coreMatch, "Electrical calculation core markers missing");
 const motorMatch = app.match(/const CS=\[[^\]]+\];\s*C\.motor=\(P,U,c,e\)=>\{[\s\S]*?\};\s*C\.lamps=\(E,S,F,cu,mf\)=>Math\.ceil\([^;]+;/);
 assert.ok(motorMatch, "Motor and lighting calculation functions missing");
-const advancedMatch = app.match(/C\.qc=\(P,c1,c2\)=>[^;]+;\s*C\.unbalance=\(a\)=>\{[\s\S]*?\};\s*const CVK=\[[^;]+;\s*C\.conv=\(v,m\)=>[^;]+;/);
+const advancedMatch = app.match(/C\.qc=\(P,c1,c2\)=>[^;]+;\s*C\.unbalance=a=>\{[\s\S]*?\};\s*const CVK=\[[^;]+;\s*C\.conv=\(v,m\)=>[^;]+;/);
 assert.ok(advancedMatch, "Power-factor, phase-balance, and conversion functions missing");
 
 const { C } = vm.runInNewContext(
