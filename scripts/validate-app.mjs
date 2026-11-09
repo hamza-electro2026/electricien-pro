@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const scripts = [...html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)]
-  .filter(([, attrs, body]) => body.trim() && !/application\/ld\\+json/i.test(attrs))
+  .filter(([, attrs, body]) => body.trim() && !attrs.includes("application/ld+json"))
   .map(([, , body]) => body);
 
 assert.ok(scripts.length > 0, "No executable inline JavaScript found");
