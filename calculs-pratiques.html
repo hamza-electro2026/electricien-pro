@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Exemples pratiques de calcul électrique — Électricien Pro</title>
+<meta name="description" content="Exemples expliqués en français et en arabe pour calculer courant, puissance, consommation et chute de tension, avec limites et contrôles de sécurité.">
+<meta name="robots" content="index,follow"><link rel="canonical" href="https://hamza-electro2026.github.io/electricien-pro/calculs-pratiques.html">
+<style>body{font:16px/1.75 system-ui,sans-serif;max-width:900px;margin:auto;padding:18px;background:#f4f6fb;color:#14213d}main{background:white;padding:24px;border-radius:14px}a{color:#1d4ed8}h1,h2{color:#1e3a8a}code{background:#eef2ff;padding:2px 5px;border-radius:5px}.example{background:#f1f5f9;padding:14px;border-radius:10px;margin:12px 0}.ar{direction:rtl;text-align:right;border-top:2px solid #dbeafe;margin-top:30px;padding-top:24px}.ar h1,.ar h2{color:#1e3a8a}</style></head>
+<body><main><p><a href="./">← Application Électricien Pro</a> · <a href="guide.html">Guide général</a></p>
+<h1>Exemples pratiques de calcul électrique</h1>
+<p>Cette page présente des exemples pédagogiques pour comprendre les grandeurs électriques et vérifier les résultats d’un calculateur. Les valeurs sont des hypothèses de calcul, pas des prescriptions de dimensionnement. Remplacez-les par les données réelles de l’installation et de la plaque signalétique.</p>
+<h2>1. Calculer le courant d’un récepteur monophasé</h2>
+<p>Pour une charge monophasée en courant alternatif, lorsque la puissance active est connue :</p><div class="example"><code>I = P / (U × cos φ)</code><br>Exemple : P = 3 000 W, U = 230 V et cos φ = 0,90.<br>I = 3 000 / (230 × 0,90) ≈ <strong>14,49 A</strong>.</div>
+<p>Pour une résistance chauffante, le facteur de puissance est généralement proche de 1. Pour un moteur ou certains appareils électroniques, il faut utiliser les données du fabricant. Ne confondez pas puissance active en watts et puissance apparente en voltampères.</p>
+<h2>2. Calculer le courant d’un récepteur triphasé équilibré</h2>
+<p>Pour un système triphasé équilibré, avec U la tension entre phases :</p><div class="example"><code>I = P / (√3 × U × cos φ)</code><br>Exemple simplifié : P = 11 000 W, U = 400 V et cos φ = 0,85.<br>I ≈ 11 000 / (1,732 × 400 × 0,85) ≈ <strong>18,67 A</strong>.</div>
+<p>Pour un moteur, la puissance indiquée peut être la puissance mécanique utile. Il faut alors aussi intégrer le rendement η : <code>I = P utile / (√3 × U × cos φ × η)</code>. Vérifiez toujours si la plaque donne la puissance absorbée ou la puissance utile.</p>
+<h2>3. Estimer une consommation d’énergie</h2>
+<div class="example"><code>E (kWh) = P (kW) × durée (h)</code><br>Un appareil de 2 kW utilisé 5 heures par jour pendant 30 jours consomme : 2 × 5 × 30 = <strong>300 kWh</strong>.<br>Avec un prix hypothétique de 1,20 DH/kWh, le coût énergétique estimé est 300 × 1,20 = <strong>360 DH</strong>.</div>
+<p>Le montant réel de la facture peut différer en raison des tranches tarifaires, taxes, frais fixes et conditions du fournisseur. Utilisez le prix correspondant à votre facture pour une estimation plus utile.</p>
+<h2>4. Comprendre la chute de tension</h2>
+<p>La chute de tension dépend notamment du courant, de la longueur, de la section, du matériau, de la température et du type de circuit. Un modèle résistif simplifié en monophasé utilise :</p><div class="example"><code>ΔU = 2 × ρ × L × I / S</code></div>
+<p>Dans cette expression, ρ est la résistivité retenue pour le calcul, L la longueur aller en mètres, I le courant en ampères et S la section en mm². Le facteur 2 représente l’aller-retour des conducteurs. Ce modèle ne prend pas en compte la réactance et ne remplace pas les méthodes normatives adaptées au type de câble et à l’installation.</p>
+<h2>5. Pourquoi le choix du câble ne dépend pas d’un seul chiffre</h2>
+<p>Une section calculée à partir du courant ou de la chute de tension n’est qu’un point de départ. Il faut aussi vérifier le mode de pose, le type d’isolant, la température ambiante, le regroupement des circuits, le nombre de conducteurs chargés, la longueur, les conditions de court-circuit et la coordination avec la protection. Une section normalisée immédiatement supérieure n’est pas automatiquement conforme si les autres conditions ne sont pas vérifiées.</p>
+<h2>6. Vérifier une protection</h2>
+<p>La coordination entre charge, disjoncteur et câble doit notamment examiner la relation <code>Ib ≤ In ≤ Iz</code> : courant d’emploi, calibre de protection et courant admissible corrigé du câble. Il faut également contrôler le pouvoir de coupure par rapport au courant de court-circuit présumé, les temps de coupure, la sélectivité éventuelle et le régime de neutre. Le calibre seul ne suffit pas pour déclarer une installation sûre.</p>
+<h2>7. Méthode de travail et sécurité</h2>
+<ul><li>Relever la tension, le nombre de phases et les caractéristiques de la charge.</li><li>Lire la plaque signalétique et distinguer puissance utile, puissance absorbée et facteur de puissance.</li><li>Vérifier les unités avant de saisir les valeurs : W ou kW, m, mm², A et V.</li><li>Comparer le résultat à un calcul indépendant et aux tableaux du fabricant.</li><li>Avant toute intervention, mettre hors tension, condamner si nécessaire et vérifier l’absence de tension avec un appareil adapté.</li></ul>
+<p><strong>Limite importante :</strong> ces exemples sont éducatifs. Les normes marocaines applicables, les prescriptions du distributeur et les notices des fabricants priment. Toute conception, sélection de protection et vérification d’installation doit être réalisée ou validée par une personne qualifiée.</p>
+<section class="ar" lang="ar" dir="rtl"><p><a href="./">← تطبيق كهربائي برو</a> · <a href="guide.html">الدليل العام</a></p>
+<h1>أمثلة تطبيقية في الحساب الكهربائي</h1>
+<p>هاد الصفحة فيها أمثلة تعليمية باش تفهم المقادير الكهربائية وتراجع نتائج الحساب. الأرقام مفترضة للتوضيح وماشي تعليمات نهائية لاختيار الكابلات أو الحمايات. استعمل دائماً المعطيات الحقيقية ديال التركيب ولوحة الجهاز.</p>
+<h2>1. حساب تيار جهاز أحادي الطور</h2>
+<p>إلا كانت القدرة الفعالة معروفة في أحادي الطور:</p><div class="example"><code>I = P / (U × cos φ)</code><br>مثال: القدرة 3000 واط، الجهد 230 فولت، ومعامل القدرة 0.90.<br>التيار = 3000 ÷ (230 × 0.90) ≈ <strong>14.49 أمبير</strong>.</div>
+<p>السخان المقاومي غالباً معامل القدرة ديالو قريب من 1. أما المحرك وبعض الأجهزة الإلكترونية خاص استعمال معطيات الشركة المصنعة. ما تخلطش بين القدرة الفعالة بالواط والقدرة الظاهرية بالفولت أمبير.</p>
+<h2>2. حساب تيار جهاز ثلاثي الأطوار متوازن</h2>
+<p>في شبكة ثلاثية متوازنة، U هو الجهد بين الأطوار:</p><div class="example"><code>I = P / (√3 × U × cos φ)</code><br>مثال مبسط: 11000 واط، 400 فولت، ومعامل القدرة 0.85.<br>التيار ≈ <strong>18.67 أمبير</strong>.</div>
+<p>بالنسبة للمحرك، إلا كانت القدرة المكتوبة هي القدرة الميكانيكية المفيدة، خاص ندخلو المردود η في الحساب: <code>I = P utile / (√3 × U × cos φ × η)</code>. تأكد واش لوحة المحرك كتعطي القدرة الممتصة ولا القدرة المفيدة.</p>
+<h2>3. تقدير استهلاك الطاقة</h2>
+<div class="example"><code>الطاقة (kWh) = القدرة (kW) × المدة (بالساعات)</code><br>جهاز قدرته 2 كيلوواط خدام 5 ساعات في اليوم لمدة 30 يوم: 2 × 5 × 30 = <strong>300 كيلوواط ساعة</strong>.<br>إلا افترضنا ثمن 1.20 درهم للكيلوواط ساعة، التكلفة التقديرية هي <strong>360 درهم</strong>.</div>
+<p>الفاتورة الحقيقية ممكن تختلف بسبب الشرائح والضرائب والرسوم الثابتة وشروط الموزع. استعمل الثمن اللي كاين في فاتورتك باش تكون النتيجة أقرب للواقع.</p>
+<h2>4. فهم هبوط الجهد</h2>
+<p>هبوط الجهد كيتأثر بالتيار والطول والمقطع والمادة والحرارة ونوع الدائرة. نموذج مقاومي مبسط لأحادي الطور هو:</p><div class="example"><code>ΔU = 2 × ρ × L × I / S</code></div>
+<p>ρ هي المقاومية المستعملة في الحساب، L طول الذهاب بالمتر، I التيار بالأمبير، وS مقطع السلك بالمليمتر المربع. العدد 2 كيمثل الذهاب والإياب. هاد النموذج ما كيحسبش المفاعلة وما كيعوضش الطرق المعيارية المناسبة لنوع الكابل والتركيب.</p>
+<h2>5. علاش اختيار الكابل ما كيعتمدش على رقم واحد؟</h2>
+<p>المقطع اللي تحسب بالتيار أو هبوط الجهد غير نقطة بداية. خاص كذلك نتحققو من طريقة التركيب ونوع العازل والحرارة وتجميع الدوائر وعدد الأسلاك المحملة والطول وظروف تيار القصر والتنسيق مع جهاز الحماية. اختيار المقطع التجاري الأكبر ما كيعنيش بوحدو أن التركيب مطابق.</p>
+<h2>6. التحقق من الحماية</h2>
+<p>التنسيق بين الحمل والقاطع والكابل كيتطلب مثلاً التحقق من العلاقة <code>Ib ≤ In ≤ Iz</code>: تيار الاستعمال، عيار الحماية، والتيار المسموح للكابل بعد معاملات التصحيح. خاص كذلك التحقق من قدرة القطع مقارنة بتيار القصر المتوقع، وزمن الفصل والانتقائية ونظام التأريض. العيار بوحدو ما كافيش باش نقولو التركيب آمن.</p>
+<h2>7. طريقة العمل والسلامة</h2>
+<ul><li>سجل الجهد وعدد الأطوار ومواصفات الحمل.</li><li>قرا لوحة الجهاز وفرق بين القدرة المفيدة والممتصة ومعامل القدرة.</li><li>راجع الوحدات قبل إدخالها: واط أو كيلوواط، متر، مم²، أمبير وفولت.</li><li>قارن النتيجة بحساب مستقل وبجداول الشركة المصنعة.</li><li>قبل أي تدخل، افصل الكهرباء وأمّن الفصل وتأكد من غياب الجهد بجهاز مناسب.</li></ul>
+<p><strong>تنبيه مهم:</strong> هاد الأمثلة للتعلم فقط. المعايير المغربية المعمول بها وتعليمات الموزع والشركات المصنعة هي المرجع. خاص شخص مؤهل ينجز أو يصادق على التصميم واختيار الحمايات وفحص التركيب.</p></section>
+<p><a href="about.html">À propos / من نحن</a> · <a href="privacy.html">Confidentialité / الخصوصية</a> · <a href="contact.html">Contact / تواصل</a></p></main></body></html>
