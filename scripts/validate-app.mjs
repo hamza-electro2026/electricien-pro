@@ -16,6 +16,7 @@ assert.ok(app.includes('Math.sqrt(3)*N("u")'), "Balanced three-phase lighting cu
 assert.ok(app.includes("0.8*10*phaseU"), "80%-loaded lighting circuit calculation missing");
 assert.ok(app.includes('mc>1||me<=0||me>100'), "Motor input bounds validation missing");
 assert.ok(app.includes('cu<=1&&mf>0&&mf<=1'), "Lighting factor bounds validation missing");
+assert.ok(app.includes('$("up").value=sys()==1?"220":"380"'), "Network type and voltage selector synchronization missing");
 
 const current = (p, u, threePhase) => p / (threePhase ? Math.sqrt(3) * u : u);
 assert.equal(current(920, 230, false), 4);
