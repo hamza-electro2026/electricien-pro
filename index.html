@@ -205,7 +205,7 @@ const T={fr:{app:"Électricien Pro",sub:"Calculs électriques 220 V / 380 V",sys
 tabs:["Courant","Coût","Câble","Chute U","Protection","Formules"],t0:"Courant et puissance",mode:"Calcul",pi:"Puissance → Courant",ip:"Courant → Puissance",unit:"Unité",vP:"Puissance",vI:"Courant (A)",
 t1:"Consommation et coût",pw:"Puissance (W)",hd:"Heures / jour",dm:"Jours / mois",px:"Prix du kWh (DH)",pxn:"Le prix du kWh dépend de votre tranche de consommation : reprenez-le sur votre facture (ONEE ou régie).",
 t2:"Section de câble",cur:"Courant (A)",len:"Longueur (m)",mx:"Chute de tension max.",cn:"La section retenue respecte à la fois le courant admissible (câble sous conduit, isolant PVC) et la chute de tension maximale.",
-t3:"Chute de tension",sec:"Section (mm²)",vn:"Calcul résistif (cos φ = 1), donc légèrement pessimiste. Limites usuelles : 3 % éclairage, 5 % autres usages.",
+t3:"Chute de tension",sec:"Section (mm²)",vn:"Modèle résistif simplifié (cos φ = 1), sans réactance des conducteurs. Limites usuelles à confirmer selon le circuit et la norme applicable : 3 % éclairage, 5 % autres usages.",
 t4:"Disjoncteur et protection",lt:"Type de charge",lb:"Éclairage / résistif (B)",lc:"Prises / usage général (C)",ld:"Moteurs / fort appel (D)",pn:"Choisissez toujours In ≥ Ib et In ≤ Iz du câble. Valeurs indicatives : vérifiez la norme locale (NF C 15-100 / IEC 60364).",
 P:"Puissance",I:"Courant",S:"Puissance apparente",kwhd:"Énergie / jour",kwhm:"Énergie / mois",kwhy:"Énergie / an",cm:"Coût / mois",cy:"Coût / an",
 sv:"Section minimale (chute U)",si:"Section minimale (courant)",sf:"Section recommandée",real:"Chute réelle",none:"Hors table : étudier le cas",dv:"Chute de tension",ok:"Conforme",ko:"Trop élevée",
@@ -216,7 +216,7 @@ ar:{app:"كهربائي برو",sub:"حسابات كهربائية 220 فولت 
 tabs:["التيار","التكلفة","الكابل","هبوط الجهد","الحماية","القوانين"],t0:"التيار والقدرة",mode:"الحساب",pi:"القدرة ← التيار",ip:"التيار ← القدرة",unit:"الوحدة",vP:"القدرة",vI:"التيار (أمبير)",
 t1:"الاستهلاك والتكلفة",pw:"القدرة (واط)",hd:"ساعات / يوم",dm:"أيام / شهر",px:"سعر الكيلوواط ساعة (درهم)",pxn:"يختلف سعر الكيلوواط ساعة حسب شريحة الاستهلاك: خذه من فاتورتك (المكتب الوطني أو الوكالة).",
 t2:"مقطع الكابل",cur:"التيار (أمبير)",len:"الطول (متر)",mx:"أقصى هبوط للجهد",cn:"المقطع المقترح يحترم التيار المسموح (كابل داخل أنبوب، عزل PVC) وأقصى هبوط للجهد.",
-t3:"هبوط الجهد",sec:"المقطع (مم²)",vn:"حساب مقاومي (cos φ = 1) لذلك هو متحفظ قليلاً. الحدود المعتادة: 3% للإنارة و5% لباقي الاستعمالات.",
+t3:"هبوط الجهد",sec:"المقطع (مم²)",vn:"نموذج مقاومي مبسط (معامل القدرة = 1)، ولا يحتسب مفاعلة الأسلاك. حدود 3% للإنارة و5% لباقي الاستعمالات إرشادية ويجب تأكيدها حسب الدائرة والمعيار المعمول به.",
 t4:"القاطع والحماية",lt:"نوع الحمل",lb:"إنارة / مقاومي (B)",lc:"مقابس / استعمال عام (C)",ld:"محركات / تيار إقلاع عال (D)",pn:"اختر دائماً In ≥ Ib و In ≤ Iz للكابل. قيم إرشادية: راجع المعيار المحلي (NF C 15-100 / IEC 60364).",
 P:"القدرة",I:"التيار",S:"القدرة الظاهرية",kwhd:"الطاقة / يوم",kwhm:"الطاقة / شهر",kwhy:"الطاقة / سنة",cm:"التكلفة / شهر",cy:"التكلفة / سنة",
 sv:"أدنى مقطع (هبوط الجهد)",si:"أدنى مقطع (التيار)",sf:"المقطع الموصى به",real:"الهبوط الفعلي",none:"خارج الجدول: يلزم دراسة",dv:"هبوط الجهد",ok:"مطابق",ko:"مرتفع جداً",
@@ -287,6 +287,7 @@ function drawSc(){const i=+$("sc").value||0;$("o8").innerHTML=`<svg viewBox="0 0
 /*END2*/
 /*C3*/
 C.qc=(P,c1,c2)=>P*(Math.tan(Math.acos(c1))-Math.tan(Math.acos(c2)));
+C.unbalance=a=>{const avg=a.reduce((x,y)=>x+y,0)/a.length;return avg>0?Math.max(...a.map(x=>Math.abs(x-avg)))/avg*100:0};
 const CVK=[0.7355,0.7457];
 C.conv=(v,m)=>m==0?v*CVK[0]:m==1?v*CVK[1]:m==2?v/CVK[0]:v/CVK[1];
 const CT=[[1.5,10,"16 A max"],[2.5,20,""],[2.5,20,""],[2.5,20,""],[6,32,""],[2.5,20,""]];
@@ -325,10 +326,10 @@ T.fr.tabs.push("Outils");T.ar.tabs.push("أدوات");
 function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
  const uu=String(N("u"));[...$("up").options].forEach(o=>o.selected=o.value==uu);
  const In=C.breaker(N("i4"));
- const P=N("pq"),a=cl(N("c1"),.1,1),b=cl(N("c2"),.1,1);
- if(P>0&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
+ const P=N("pq"),a=N("c1"),b=N("c2");
+ if(P>0&&a>0&&a<=1&&b>0&&b<=1&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
  $("o10a").innerHTML=row(t.qcl,f(q),"kvar","big")+row(t.ib,f(i1),"A")+row(t.ia,f(i2),"A")+row(t.gn,f(i1-i2),"A")}
- else $("o10a").innerHTML="";
+ else $("o10a").innerHTML="<div class='note'>"+(L==="ar"?"أدخل قدرة موجبة، ومعاملي قدرة بين 0 و1، على أن يكون المعامل المطلوب أكبر من الحالي.":"Saisissez une puissance positive, deux cos φ entre 0 et 1, avec un cos φ cible supérieur au cos φ actuel.")+"</div>";
  const m=+$("cvm").value,r=C.conv(N("cvv"),m);$("o10b").innerHTML=row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big");
  const c=CT[+$("ct").value];$("o10c").innerHTML=row(t.sec,f(c[0],1),"mm²","big")+row(t.cbk,c[1],"A"+(c[2]?" ("+c[2]+")":""))+row(t.rcd,"30","mA")}
 function calc4(){
@@ -344,7 +345,7 @@ function calc4(){
    $("o10e").innerHTML=row("C / phase",f(Cph*1e6,1),"µF","big")+row("Q",f(q/1000),"kvar")+row("f",f(hz),"Hz");
  } else $("o10e").innerHTML="";
  const rho=N("erho"),len=N("elen"),dia=N("edia")/1000;
- if(rho>0&&len>0&&dia>0&&4*len/dia>1){
+ if(rho>0&&len>0&&dia>0&&4*len/dia>Math.E){
    const re=rho/(2*Math.PI*len)*(Math.log(4*len/dia)-1);
    $("o10f").innerHTML=row("R terre estimée",f(re),"Ω","big");
  } else $("o10f").innerHTML="";
@@ -354,13 +355,13 @@ function calc4(){
  if(kva>0&&up>0&&us>0){
    $("o10h").innerHTML=row("I primaire",f(kva*1000/(k*up)),"A","big")+row("I secondaire",f(kva*1000/(k*us)),"A")+row("S",f(kva),"kVA");
  } else $("o10h").innerHTML="";
- const vl=N("vline"),bc=Math.min(Math.max(N("balcos"),0.01),1),loads=[N("pa"),N("pb"),N("pc")];
- if(vl>0&&loads.some(x=>x>0)){
-   const iph=loads.map(x=>x/(vl/Math.sqrt(3)*bc)),avg=iph.reduce((x,y)=>x+y,0)/3,max=Math.max(...iph);
-   const unb=avg>0?(max-avg)/avg*100:0;
+ const vl=N("vline"),bc=N("balcos"),loads=[N("pa"),N("pb"),N("pc")];
+ if(vl>0&&bc>0&&bc<=1&&loads.every(x=>x>=0)&&loads.some(x=>x>0)){
+   const iph=loads.map(x=>x/(vl/Math.sqrt(3)*bc)),avg=iph.reduce((x,y)=>x+y,0)/3;
+   const unb=C.unbalance(iph);
    const neutral=Math.sqrt(Math.max(0,iph[0]**2+iph[1]**2+iph[2]**2-iph[0]*iph[1]-iph[1]*iph[2]-iph[2]*iph[0]));
    $("o10i").innerHTML=row("L1",f(iph[0]),"A")+row("L2",f(iph[1]),"A")+row("L3",f(iph[2]),"A")+row("Moyenne",f(avg),"A")+row("Déséquilibre estimé",f(unb)," %","big")+row("Courant neutre estimé",f(neutral),"A");
- } else $("o10i").innerHTML="";
+ } else $("o10i").innerHTML="<div class='note'>"+(L==="ar"?"تحقق من جهد موجب، ومعامل قدرة بين 0 و1، وقدرات غير سالبة مع وجود حمل واحد على الأقل.":"Vérifiez une tension positive, un cos φ entre 0 et 1 et des puissances non négatives avec au moins une charge.")+"</div>";
 }
 let L="fr";const $=i=>document.getElementById(i),N=i=>parseFloat($(i).value)||0;
 const f=(x,d=2)=>x.toLocaleString(L=="ar"?"en-US":"fr-FR",{maximumFractionDigits:d});
