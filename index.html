@@ -107,7 +107,7 @@ ul{padding-inline-start:20px;margin:6px 0}
 <section class="panel" id="p5"><div class="card" id="o5"></div></section>
 <section class="panel" id="p6"><div class="card"><h3 data-i="tm"></h3>
 <div class="g"><div><label data-i="pmk"></label><input id="pm" type="number" inputmode="decimal" step="0.1" value="5.5"></div>
-<div><label data-i="volt"></label><input id="um" type="number" inputmode="decimal" value="380"></div>
+<div><label data-i="mvolt"></label><input id="um" type="number" inputmode="decimal" value="380"></div>
 <div><label data-i="cos"></label><input id="mcos" type="number" inputmode="decimal" step="0.01" value="0.85"></div>
 <div><label data-i="mef"></label><input id="mef" type="number" inputmode="decimal" value="88"></div></div>
 <div class="res" id="o6"></div><div class="note" data-i="mn"></div></div></section>
@@ -243,11 +243,11 @@ const SC=[
 ];
 Object.assign(T.fr,{
 tabs:["Courant","Coût","Câble","Chute U","Protection","Formules","Moteur","Éclairage","Schémas","Guides"],
-tm:"Moteur triphasé",pmk:"Puissance utile (kW)",mef:"Rendement η (%)",mi:"Courant nominal In",mpe:"Puissance absorbée",mid:"Démarrage direct (≈ 7 × In)",miy:"Démarrage étoile-triangle (≈ 1/3)",mct:"Contacteur mini (AC-3)",mth:"Relais thermique : réglage",mbr:"Disjoncteur moteur (à choisir selon le fabricant)",mfu:"Fusible aM",mcb:"Section câble mini",
-mn:"Formule : In = P / (√3 × U × cos φ × η). Étoile-triangle : plaque 380/660 V → couplage triangle sur 380 V ; démarrage en étoile (tension ÷ √3, courant et couple ÷ 3) puis passage en triangle. Autres méthodes : démarrage direct (petits moteurs), statorique, démarreur progressif, variateur de vitesse. Le fusible aM ne protège que du court-circuit : il faut un relais thermique. Le calibre du disjoncteur moteur et du fusible aM doit être choisi selon la plaque moteur, le démarreur et les tableaux du fabricant ; non calculé ici. Valeurs de démarrage indicatives.",
+tm:"Moteur triphasé",pmk:"Puissance utile (kW)",mvolt:"Tension entre phases (V) — moteur triphasé",mef:"Rendement η (%)",mi:"Courant nominal In",mpe:"Puissance absorbée",mid:"Démarrage direct (≈ 7 × In)",miy:"Démarrage étoile-triangle (≈ 1/3)",mct:"Contacteur AC-3 indicatif (à vérifier fabricant)",mth:"Courant thermique théorique (à régler selon plaque)",mbr:"Disjoncteur moteur (à choisir selon le fabricant)",mfu:"Fusible aM",mcb:"Section indicative selon courant seul",
+mn:"Formule : In = P / (√3 × U × cos φ × η). Étoile-triangle : plaque 380/660 V → couplage triangle sur 380 V ; démarrage en étoile (tension ÷ √3, courant et couple ÷ 3) puis passage en triangle. Autres méthodes : démarrage direct (petits moteurs), statorique, démarreur progressif, variateur de vitesse. Le fusible aM ne protège que du court-circuit : il faut un relais thermique. Le calibre du disjoncteur moteur et du fusible aM doit être choisi selon la plaque moteur, le démarreur et les tableaux du fabricant ; non calculé ici. Le contacteur AC-3 doit aussi être vérifié selon la catégorie d’emploi et les données du fabricant. Le réglage thermique se fait selon la plaque moteur et le montage réel. La section affichée est une estimation selon le courant seul, sans facteurs de correction ni vérification de chute de tension. Valeurs de démarrage indicatives.",
 tl:"Éclairage",rmn:"Local",r1:"Salon / séjour (200 lx)",r2:"Cuisine (300 lx)",r3:"Chambre (150 lx)",r4:"Salle de bain (200 lx)",r5:"Bureau (500 lx)",r6:"Atelier (300 lx)",r7:"Couloir (100 lx)",sa:"Surface (m²)",lm:"Flux par lampe (lumens)",lw:"Puissance par lampe (W)",cu2:"Facteur d’utilisation",mf:"Facteur de maintenance",
-ln:"Méthode du flux : N = (E × S) / (Φ × CU × MF). Les niveaux d’éclairement sont usuels : vérifiez la norme (EN 12464-1). Un circuit éclairage = 10 A max, chargé à 80 %.",
-nl:"Nombre de lampes",tw:"Puissance totale",ti:"Courant (220 V)",dn:"Densité",nc:"Circuits éclairage (10 A)",
+ln:"Méthode du flux : N = (E × S) / (Φ × CU × MF). Les niveaux d’éclairement sont usuels : vérifiez la norme (EN 12464-1). Un circuit éclairage = 10 A max, chargé à 80 %. Le courant estimé suppose cos φ = 1 et une répartition équilibrée en triphasé ; vérifiez le facteur de puissance réel des luminaires.",
+nl:"Nombre de lampes",tw:"Puissance totale",ti:"Courant estimé (cos φ = 1)",dn:"Densité",nc:"Circuits éclairage (10 A)",
 ts:"Schémas électriques",chs:"Choisir un schéma",
 sn:["Simple allumage","Va-et-vient","Double allumage","Télérupteur","Prises de courant","Commande moteur industriel"],
 sd:["La phase (L, rouge/marron/noir) passe par l’interrupteur ; le neutre (N, bleu) va directement à la lampe. Terre (vert/jaune) sur les luminaires de classe I. Câble 1,5 mm².","Deux interrupteurs va-et-vient reliés par deux fils navettes (orange). La phase arrive au commun de S1 ; le commun de S2 va à la lampe. Câble 1,5 mm².","Un interrupteur double commande deux lampes ou groupes de lampes indépendants. Une phase par commande, un neutre commun.","Les boutons poussoirs (BP1, BP2, en parallèle) alimentent la bobine A1-A2 du télérupteur ; son contact commute la lampe. Autant de boutons que voulu, en parallèle.","Circuit prises : disjoncteur 20 A + différentiel 30 mA, câble 2,5 mm² avec terre (PE), 8 prises maximum par circuit en usage courant.","Circuit de puissance : sectionneur Q1, contacteur KM1, relais thermique F1, moteur. Commande : arrêt S0 (NF), marche S1 (NO) avec auto-maintien par le contact de KM1, contact du relais F1. Respectez la tension de bobine."],
@@ -255,11 +255,11 @@ disc:"Les résultats sont indicatifs. Normes de référence : NF C 15-100 et IEC
 gd:"<div class='card' style='border-color:var(--bad)'><h3>⚠ Sécurité</h3><ul><li>Les 5 règles : séparer, condamner, vérifier l’absence de tension (VAT), mettre à la terre/court-circuiter si nécessaire, délimiter la zone.</li><li>Travaillez hors tension, avec outils isolés, EPI et habilitation adaptée.</li><li>Ne shuntez jamais une protection. Une protection qui saute est un symptôme : cherchez la cause.</li></ul></div><div class='card'><h3>🏠 Résidentiel</h3><ul><li>Éclairage : 1,5 mm², 10 A (16 A max). Prises : 2,5 mm², 20 A.</li><li>Plaque de cuisson : 6 mm², 32 A. Chauffe-eau, lave-linge : circuit dédié 2,5 mm², 20 A.</li><li>Différentiel 30 mA (type A) sur prises et locaux humides ; mise à la terre obligatoire.</li><li>Tableau : repérez chaque circuit, gardez une réserve de place.</li></ul></div><div class='card'><h3>🏭 Industriel</h3><ul><li>Départ moteur : sectionneur + protection court-circuit (disjoncteur ou fusible aM) + contacteur + relais thermique.</li><li>Vérifiez régime de neutre (TT, TN, IT), indice IP et température ambiante.</li><li>Équilibrez les phases et corrigez le cos φ si besoin.</li></ul></div><div class='card'><h3>🛡 Protections</h3><ul><li>Thermique (bilame) : surcharge. Magnétique : court-circuit. Courbes : B 3–5 × In, C 5–10 × In, D 10–20 × In.</li><li>Fusibles : gG (câbles), aM (moteurs, court-circuit seul).</li><li>Différentiel : 30 mA personnes ; 300 mA incendie / général. Testez le bouton test chaque mois.</li></ul></div><div class='card'><h3>🔧 Dépannage</h3><ul><li>Disjoncteur qui saute : surcharge (mesurez le courant) ou court-circuit (isolez les récepteurs).</li><li>Différentiel qui saute : défaut d’isolement ; déconnectez circuit par circuit, mesurez à l’mégohmmètre.</li><li>Moteur qui chauffe : surcharge, phase manquante, tension basse, roulement.</li><li>Contacteur qui claque : tension de bobine faible ou contacts usés.</li><li>Lampe qui clignote ou prise chaude : connexion desserrée, resserrez.</li></ul></div>"});
 Object.assign(T.ar,{
 tabs:["التيار","التكلفة","الكابل","هبوط الجهد","الحماية","القوانين","المحرك","الإنارة","المخططات","الأدلة"],
-tm:"محرك ثلاثي الأطوار",pmk:"القدرة المفيدة (كيلوواط)",mef:"المردود η (%)",mi:"التيار الاسمي In",mpe:"القدرة الممتصة",mid:"إقلاع مباشر (≈ 7 × In)",miy:"إقلاع نجمة-مثلث (≈ 1/3)",mct:"أدنى ملامس (AC-3)",mth:"المرحل الحراري: الضبط",mbr:"قاطع حماية المحرك (حسب توصيات الصانع)",mfu:"مصهر aM",mcb:"أدنى مقطع كابل",
-mn:"القانون: In = P / (√3 × U × cos φ × η). نجمة-مثلث: لوحة المحرك 380/660 فولت ← ربط مثلث على 380 فولت؛ الإقلاع بنجمة (الجهد ÷ √3 والتيار والعزم ÷ 3) ثم التحويل إلى مثلث. طرق أخرى: إقلاع مباشر (محركات صغيرة)، إقلاع بمقاومات، مبدئ تدريجي، متغير سرعة. مصهر aM يحمي من القصر فقط، ويلزم مرحل حراري. يجب اختيار عيار قاطع المحرك ومصهر aM حسب لوحة المحرك والمبدئ وجداول الصانع؛ لا يتم حسابهما هنا. قيم الإقلاع تقريبية.",
+tm:"محرك ثلاثي الأطوار",pmk:"القدرة المفيدة (كيلوواط)",mvolt:"الجهد بين الأطوار (فولت) — محرك ثلاثي الأطوار",mef:"المردود η (%)",mi:"التيار الاسمي In",mpe:"القدرة الممتصة",mid:"إقلاع مباشر (≈ 7 × In)",miy:"إقلاع نجمة-مثلث (≈ 1/3)",mct:"ملامس AC-3 تقديري (تحقق من الصانع)",mth:"تيار حراري نظري (الضبط حسب لوحة المحرك)",mbr:"قاطع حماية المحرك (حسب توصيات الصانع)",mfu:"مصهر aM",mcb:"مقطع تقديري حسب التيار فقط",
+mn:"القانون: In = P / (√3 × U × cos φ × η). نجمة-مثلث: لوحة المحرك 380/660 فولت ← ربط مثلث على 380 فولت؛ الإقلاع بنجمة (الجهد ÷ √3 والتيار والعزم ÷ 3) ثم التحويل إلى مثلث. طرق أخرى: إقلاع مباشر (محركات صغيرة)، إقلاع بمقاومات، مبدئ تدريجي، متغير سرعة. مصهر aM يحمي من القصر فقط، ويلزم مرحل حراري. يجب اختيار عيار قاطع المحرك ومصهر aM حسب لوحة المحرك والمبدئ وجداول الصانع؛ لا يتم حسابهما هنا. يجب أيضاً التحقق من ملامس AC-3 حسب فئة الاستعمال وبيانات الصانع. يضبط المرحل الحراري حسب لوحة المحرك والتركيب الفعلي. مقطع الكابل المعروض تقديري حسب التيار فقط، دون معاملات التصحيح أو التحقق من هبوط الجهد. قيم الإقلاع تقريبية.",
 tl:"الإنارة",rmn:"المكان",r1:"صالون (200 لوكس)",r2:"مطبخ (300 لوكس)",r3:"غرفة نوم (150 لوكس)",r4:"حمام (200 لوكس)",r5:"مكتب (500 لوكس)",r6:"ورشة (300 لوكس)",r7:"ممر (100 لوكس)",sa:"المساحة (م²)",lm:"التدفق لكل مصباح (لومن)",lw:"قدرة المصباح (واط)",cu2:"معامل الاستعمال",mf:"معامل الصيانة",
-ln:"طريقة التدفق: N = (E × S) / (Φ × CU × MF). مستويات الإضاءة معتادة: راجع المعيار (EN 12464-1). دائرة إنارة = 10 أمبير كحد أقصى بحمولة 80%.",
-nl:"عدد المصابيح",tw:"القدرة الإجمالية",ti:"التيار (220 فولت)",dn:"الكثافة",nc:"دوائر الإنارة (10 أمبير)",
+ln:"طريقة التدفق: N = (E × S) / (Φ × CU × MF). مستويات الإضاءة معتادة: راجع المعيار (EN 12464-1). دائرة إنارة = 10 أمبير كحد أقصى بحمولة 80%. التيار التقديري يفترض معامل قدرة = 1 وتوزيعاً متوازناً في الشبكة الثلاثية؛ تحقق من معامل القدرة الفعلي للمصابيح.",
+nl:"عدد المصابيح",tw:"القدرة الإجمالية",ti:"التيار التقديري (معامل القدرة = 1)",dn:"الكثافة",nc:"دوائر الإنارة (10 أمبير)",
 ts:"المخططات الكهربائية",chs:"اختر مخططاً",
 sn:["إنارة بسيطة","ذهاب وإياب","إنارة مزدوجة","تيليروبتور","المقابس","تحكم في محرك صناعي"],
 sd:["الطور (L) يمر عبر المفتاح والمحايد (N، أزرق) يذهب مباشرة إلى المصباح. الأرضي (أخضر/أصفر) للأجهزة من الفئة I. كابل 1.5 مم².","مفتاحا ذهاب وإياب موصولان بسلكين (برتقالي). الطور يصل إلى مشترك S1 ومشترك S2 يذهب إلى المصباح. كابل 1.5 مم².","مفتاح مزدوج يتحكم في مصباحين أو مجموعتين مستقلتين. طور لكل تحكم ومحايد مشترك.","الأزرار (BP1 وBP2 على التوازي) تغذي ملف A1-A2 للتيليروبتور ويقوم ملامسه بتشغيل المصباح. عدد غير محدود من الأزرار على التوازي.","دائرة المقابس: قاطع 20 أمبير + تفاضلي 30 مللي أمبير، كابل 2.5 مم² مع أرضي (PE)، 8 مقابس كحد أقصى للدائرة.","دائرة القدرة: فاصل Q1 وملامس KM1 ومرحل حراري F1 ومحرك. دائرة التحكم: إيقاف S0 (مغلق) وتشغيل S1 (مفتوح) مع تثبيت ذاتي بملامس KM1 وملامس المرحل F1. احترم جهد الملف."],
@@ -267,12 +267,20 @@ disc:"النتائج إرشادية. المعايير المرجعية: NF C 15-
 gd:"<div class='card' style='border-color:var(--bad)'><h3>⚠ السلامة</h3><ul><li>القواعد الخمس: الفصل، القفل، التحقق من انعدام الجهد، التأريض عند اللزوم، تحديد المنطقة.</li><li>اشتغل بدون جهد وبأدوات معزولة ومعدات حماية وتأهيل مناسب.</li><li>لا تعطل أي حماية. سقوط الحماية عَرَض فابحث عن السبب.</li></ul></div><div class='card'><h3>🏠 السكني</h3><ul><li>الإنارة: 1.5 مم² و10 أمبير (16 كحد أقصى). المقابس: 2.5 مم² و20 أمبير.</li><li>لوحة الطبخ: 6 مم² و32 أمبير. سخان الماء وغسالة: دائرة مخصصة 2.5 مم² و20 أمبير.</li><li>تفاضلي 30 مللي أمبير (نوع A) للمقابس والأماكن الرطبة، والأرضي إلزامي.</li><li>علّم كل دائرة في اللوحة واترك مكاناً احتياطياً.</li></ul></div><div class='card'><h3>🏭 الصناعي</h3><ul><li>مخرج محرك: فاصل + حماية من القصر (قاطع أو مصهر aM) + ملامس + مرحل حراري.</li><li>تحقق من نظام التأريض (TT وTN وIT) ودرجة IP والحرارة المحيطة.</li><li>وازن الأطوار وصحح cos φ عند الحاجة.</li></ul></div><div class='card'><h3>🛡 الحمايات</h3><ul><li>حراري (شريحة ثنائية): الحمل الزائد. مغناطيسي: القصر. المنحنيات: B ‏3–5 × In وC ‏5–10 × In وD ‏10–20 × In.</li><li>المصاهر: gG (الكابلات) وaM (المحركات، القصر فقط).</li><li>التفاضلي: 30 مللي أمبير للأشخاص و300 للحريق/العام. اختبر زر الاختبار شهرياً.</li></ul></div><div class='card'><h3>🔧 الإصلاح</h3><ul><li>سقوط القاطع: حمل زائد (قس التيار) أو قصر (افصل الأجهزة).</li><li>سقوط التفاضلي: عيب عزل؛ افصل دائرة دائرة وقس بالميغا أومتر.</li><li>سخونة المحرك: حمل زائد أو طور مفقود أو جهد منخفض أو محمل.</li><li>طقطقة الملامس: جهد ملف ضعيف أو ملامسات بالية.</li><li>وميض المصباح أو سخونة مقبس: وصلة مرتخية، شدّها.</li></ul></div>"});
 {const c0=calc;calc=()=>{c0();calc2()}}
 function calc2(){const t=T[L],mat=$("mat").value;
- const cl=(x,a,b)=>Math.min(Math.max(x,a),b);
- const r=C.motor(N("pm")*1000,N("um")||380,cl(N("mcos"),.01,1),cl(N("mef")/100,.05,1)),sc=C.sByI(mat,r.I,3);
+ const pm=N("pm"),um=N("um"),mc=N("mcos"),me=N("mef");
+ const invalid=pm<=0||um<=0||mc<=0||mc>1||me<=0||me>100;
+ if(invalid){$("o6").innerHTML=`<div class="note">${L==="ar"?"يرجى إدخال قدرة وجهد أكبر من صفر، ومعامل قدرة بين 0 و1، ومردود بين 0 و100%.":"Saisissez une puissance et une tension positives, cos φ entre 0 et 1 et un rendement entre 0 et 100 %."}</div>`;}
+ else {
+ const r=C.motor(pm*1000,um,mc,me/100),sc=C.sByI(mat,r.I,3);
  $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,"—","")+row(t.mfu,"—","")+row(t.mcb,sc||"—","mm²");
- const d=N("lm")*N("cu2")*N("mf");
- if(d>0&&N("sa")>0){const n=C.lamps(+$("rm").value,N("sa"),N("lm"),N("cu2"),N("mf")),W=n*N("lw");
- $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/220),"A")+row(t.dn,f(W/N("sa")),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/1760)),"")}
+ }
+ const area=N("sa"),lm=N("lm"),lw=N("lw"),cu=N("cu2"),mf=N("mf"),room=+ $("rm").value;
+ if(N("u")>0&&area>0&&lm>0&&lw>0&&cu>0&&cu<=1&&mf>0&&mf<=1&&room>0){
+ const n=C.lamps(room,area,lm,cu,mf),W=n*lw,phaseU=sys()==1?N("u"):N("u")/Math.sqrt(3);
+ $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/(sys()==1?N("u"):Math.sqrt(3)*N("u"))),"A")+row(t.dn,f(W/area),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/(0.8*10*phaseU))),"");
+ }else{
+ $("o7").innerHTML=`<div class="note">${L==="ar"?"أدخل مساحة وتدفقاً ضوئياً وقدرة المصباح ومعاملات صحيحة أكبر من صفر.":"Saisissez une surface, un flux, une puissance de lampe et des facteurs strictement positifs."}</div>`;
+ }
  drawSc()}
 function fillSc(){const o=$("sc"),i=o.selectedIndex<0?0:o.selectedIndex;o.innerHTML=T[L].sn.map((x,j)=>`<option value="${j}">${x}</option>`).join("");o.selectedIndex=i}
 function drawSc(){const i=+$("sc").value||0;$("o8").innerHTML=`<svg viewBox="0 0 330 190" width="100%" style="max-width:440px;display:block;margin:auto;color:var(--tx)">${SC[i]}</svg><p class="note">${T[L].sd[i]}</p>`}
@@ -358,23 +366,31 @@ let L="fr";const $=i=>document.getElementById(i),N=i=>parseFloat($(i).value)||0;
 const f=(x,d=2)=>x.toLocaleString(L=="ar"?"en-US":"fr-FR",{maximumFractionDigits:d});
 const row=(l,v,u="",c="")=>`<div class="r ${c}"><span>${l}</span><b>${v} ${u}</b></div>`;
 function sys(){return +$("sys").value}
-function calc(){const t=T[L],s=sys(),U=N("u"),c=Math.min(Math.max(N("cos"),0.01),1),mat=$("mat").value;
+function calc(){const t=T[L],s=sys(),U=N("u"),c=N("cos"),mat=$("mat").value;
+ const bad=(ar,fr)=>`<div class="note">${L==="ar"?ar:fr}</div>`;
  $("vl").textContent=$("mode").value=="pi"?t.vP:t.vI;
- let h="";
- if($("mode").value=="pi"){const P=N("val")*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
- else{const P=C.P(s,U,N("val"),c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
- $("o0").innerHTML=h;
- const kw=N("cw")/1000,e=kw*N("ch"),m=e*N("cd"),p=N("cp");
- $("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*p),"DH","big")+row(t.cy,f(m*p*12),"DH");
- const I2=N("i2"),L2=N("l2"),pc=+$("m2").value,a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);
- let r="";
+ const val=N("val"),validPower=val>0,validCos=c>0&&c<=1,validU=U>0;
+ if(!validPower||!validCos||!validU){$("o0").innerHTML=bad("أدخل قيمة أكبر من صفر، وجهداً صحيحاً، ومعامل قدرة بين 0 و1.","Saisissez une valeur positive, une tension valide et cos φ entre 0 et 1.");}
+ else{let h="";
+ if($("mode").value=="pi"){const P=val*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
+ else{const P=C.P(s,U,val,c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
+ $("o0").innerHTML=h;}
+ const kw=N("cw")/1000,hours=N("ch"),days=N("cd"),price=N("cp");
+ if(kw>0&&hours>0&&days>0&&price>=0){const e=kw*hours,m=e*days;$("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*price),"DH","big")+row(t.cy,f(m*price*12),"DH");}
+ else $("o1").innerHTML=bad("أدخل قدرة واستهلاكاً ومدة صحيحة، والثمن لا يمكن أن يكون سالباً.","Saisissez une puissance et des durées positives ; le tarif ne peut pas être négatif.");
+ const I2=N("i2"),L2=N("l2"),pc=+$("m2").value;
+ if(validU&&I2>0&&L2>0&&pc>0){const a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);let r="";
  if(a.S==null||b==null)r=row(t.sf,t.none,"","big");
  else{const S=Math.max(a.S,b);r=row(t.sf,f(S,1),"mm²","big")+row(t.sv,f(a.need)+" → "+a.S,"mm²")+row(t.si,b,"mm²")+row(t.real,f(C.dU(mat,s,I2,L2,S)/U*100)+" %","")}
- $("o2").innerHTML=r;
- const S3=+$("s3").value,d=C.dU(mat,s,N("i3"),N("l3"),S3),pp=d/U*100,az=C.amp(mat,S3,s);
- $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");
- const I4=N("i4"),In=I4>0?C.breaker(I4):null,sc=In?C.sByI(mat,In,s):null;
- $("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");
+ $("o2").innerHTML=r;}
+ else $("o2").innerHTML=bad("أدخل جهداً وتياراً ومسافة أكبر من صفر.","Saisissez une tension, un courant et une longueur strictement positifs.");
+ const I3=N("i3"),L3=N("l3"),S3=+$("s3").value;
+ if(validU&&I3>0&&L3>0&&S3>0){const d=C.dU(mat,s,I3,L3,S3),pp=d/U*100,az=C.amp(mat,S3,s);
+ $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");}
+ else $("o3").innerHTML=bad("أدخل جهداً وتياراً ومسافة ومقطعاً صالحاً أكبر من صفر.","Saisissez une tension, un courant, une longueur et une section valides.");
+ const I4=N("i4");
+ if(I4>0){const In=C.breaker(I4),sc=In?C.sByI(mat,In,s):null;$("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");}
+ else $("o4").innerHTML=bad("أدخل تياراً أكبر من صفر.","Saisissez un courant strictement positif.");
 }
 function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
  document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t[e.dataset.i]);
@@ -385,7 +401,7 @@ function lang(){const t=T[L];document.documentElement.lang=L;document.documentEl
 let cur=0;
 function show(j){cur=j;const order=["p0","p1","p2","p3","p4","p5","p6","p7","p8","p9","p10"];document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id===order[j]));document.querySelectorAll("#nav button").forEach((b,x)=>b.classList.toggle("on",x==j))}
 function secs(){const mat=$("mat").value,o=$("s3"),old=o.value;o.innerHTML=A[mat].S.map(x=>`<option>${x}</option>`).join("");if(A[mat].S.includes(+old))o.value=old;else o.value=A[mat].S[Math.min(3,A[mat].S.length-1)]}
-document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",()=>{if(e.id=="sys"){$("u").value=sys()==1?220:380}if(e.id=="up")$("u").value=$("up").value;if(e.id=="mat")secs();calc()}));
+document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",()=>{if(e.id=="sys"){$("up").value=sys()==1?"220":"380";$("u").value=$("up").value}if(e.id=="up")$("u").value=$("up").value;if(e.id=="mat")secs();calc()}));
 $("lb").onclick=()=>{L=L=="fr"?"ar":"fr";lang()};
 secs();lang();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
