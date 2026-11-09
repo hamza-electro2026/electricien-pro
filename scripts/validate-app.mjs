@@ -107,6 +107,7 @@ const publicPages = [
   ["guide.html", "Guide pratique des calculs électriques"],
   ["calculs-pratiques.html", "Exemples pratiques de calcul électrique"],
   ["guide-installation.html", "Préparer et vérifier une installation électrique"],
+  ["faq.html", "Questions fréquentes sur les calculs électriques"],
   ["privacy.html", "Politique de confidentialité"],
   ["contact.html", "Contact"]
 ];
@@ -125,7 +126,7 @@ assert.ok(readFileSync(new URL("../privacy.html", import.meta.url), "utf8").incl
 console.log("PASS: public pages, bilingual content, canonical links, sitemap, and monetization disclosure.");
 
 const serviceWorker = readFileSync(new URL("../sw.js", import.meta.url), "utf8");
-for (const path of ["about.html", "guide.html", "calculs-pratiques.html", "guide-installation.html", "privacy.html", "contact.html"]) {
+for (const path of ["about.html", "guide.html", "calculs-pratiques.html", "guide-installation.html", "faq.html", "privacy.html", "contact.html"]) {
   assert.ok(serviceWorker.includes(`"${path}"`), `Service worker must cache ${path} for offline reading`);
 }
-assert.ok(serviceWorker.includes('const V="ep-v8"'), "Service worker cache version must change when the offline file list changes");
+assert.ok(serviceWorker.includes('const V="ep-v9"'), "Service worker cache version must change when the offline file list changes");
