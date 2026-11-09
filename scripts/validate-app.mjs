@@ -27,4 +27,13 @@ const circuits = (p, phaseVoltage) => Math.max(1, Math.ceil(p / (0.8 * 10 * phas
 assert.equal(circuits(920, 230), 1);
 assert.equal(circuits(2760, 400 / Math.sqrt(3)), 2);
 
+
+const unbalance = (currents) => { const average = currents.reduce((sum, value) => sum + value, 0) / currents.length; return average > 0 ? Math.max(...currents.map(value => Math.abs(value - average))) / average * 100 : 0; };
+assert.equal(unbalance([10, 10, 10]), 0);
+assert.ok(Math.abs(unbalance([12, 9, 9]) - 20) < 1e-12);
+assert.ok(Math.abs(unbalance([8, 11, 11]) - 20) < 1e-12);
+const capacitorKvar = (kw, currentCos, targetCos) => kw * (Math.tan(Math.acos(currentCos)) - Math.tan(Math.acos(targetCos)));
+assert.ok(capacitorKvar(20, 0.75, 0.95) > 0);
+assert.ok(capacitorKvar(20, 0.95, 0.75) < 0);
+
 console.log("PASS: inline JavaScript syntax, required safeguards, and representative electrical arithmetic.");
