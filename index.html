@@ -388,7 +388,7 @@ function calc(){const t=T[L],s=sys(),U=N("u"),c=N("cos"),mat=$("mat").value;
  else $("o2").innerHTML=bad("أدخل جهداً وتياراً ومسافة أكبر من صفر.","Saisissez une tension, un courant et une longueur strictement positifs.");
  const I3=N("i3"),L3=N("l3"),S3=+$("s3").value;
  if(validU&&I3>0&&L3>0&&S3>0){const d=C.dU(mat,s,I3,L3,S3),pp=d/U*100,az=C.amp(mat,S3,s);
- $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?"✔ ≤ 5 %":"✖ "+t.ko}</span></div>`+row("Iz",az,"A");}
+ $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?(L==="ar"?"⚠ تحقق من الحد الخاص بالدائرة":"⚠ vérifier la limite du circuit"):"✖ > 5 %"}</span></div>`+row("Iz",az,"A");}
  else $("o3").innerHTML=bad("أدخل جهداً وتياراً ومسافة ومقطعاً صالحاً أكبر من صفر.","Saisissez une tension, un courant, une longueur et une section valides.");
  const I4=N("i4");
  if(I4>0){const In=C.breaker(I4),sc=In?C.sByI(mat,In,s):null;$("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");}
