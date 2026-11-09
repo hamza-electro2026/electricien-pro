@@ -54,7 +54,7 @@ const advancedMatch = app.match(/C\.qc=\(P,c1,c2\)=>[^;]+;\s*C\.unbalance=\(a\)=
 assert.ok(advancedMatch, "Power-factor, phase-balance, and conversion functions missing");
 
 const { C } = vm.runInNewContext(
-  coreMatch[1] + "\\n" + motorMatch[0] + "\\n" + advancedMatch[0] + "\\n({ C })"
+  coreMatch[1] + "\n" + motorMatch[0] + "\n" + advancedMatch[0] + "\n({ C })"
 );
 
 // Single- and three-phase P/I arithmetic, using the application's own functions.
