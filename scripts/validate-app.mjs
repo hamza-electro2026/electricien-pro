@@ -100,3 +100,26 @@ assert.ok(app.includes("loads.every(x=>x>=0)&&loads.some(x=>x>0)"), "Phase balan
 
 assert.ok(app.includes("vérifier la limite du circuit") && app.includes("تحقق من الحد الخاص بالدائرة"), "Voltage drop between 3% and 5% must not be labelled compliant without knowing circuit type");
 assert.ok(!app.includes('pp<=5?"✔ ≤ 5 %"'), "Remove the misleading universal 5% compliance label");
+
+// Public content pages must be discoverable and contain useful bilingual material.
+const publicPages = [
+  ["about.html", "À propos d’Électricien Pro"],
+  ["guide.html", "Guide pratique des calculs électriques"],
+  ["calculs-pratiques.html", "Exemples pratiques de calcul électrique"],
+  ["guide-installation.html", "Préparer et vérifier une installation électrique"],
+  ["privacy.html", "Politique de confidentialité"],
+  ["contact.html", "Contact"]
+];
+const sitemap = readFileSync(new URL("../sitemap.xml", import.meta.url), "utf8");
+for (const [path, title] of publicPages) {
+  const page = readFileSync(new URL("../" + path, import.meta.url), "utf8");
+  assert.ok(page.includes("<title>") && page.includes(title), `Missing or incorrect page title: ${path}`);
+  assert.ok(page.includes('rel="canonical"'), `Missing canonical URL: ${path}`);
+  assert.ok(sitemap.includes(`/electricien-pro/${path}`), `Page missing from sitemap: ${path}`);
+  assert.ok(page.includes('lang="ar"'), `Arabic content missing: ${path}`);
+}
+assert.ok(html.includes('href="guide-installation.html"'), "Homepage must link to the installation guide");
+assert.ok(html.includes('href="calculs-pratiques.html"'), "Homepage must link to practical calculation examples");
+assert.ok(readFileSync(new URL("../privacy.html", import.meta.url), "utf8").includes("ne contient pas de code publicitaire"), "Privacy policy must accurately disclose that ads are not active yet");
+
+console.log("PASS: public pages, bilingual content, canonical links, sitemap, and monetization disclosure.");
