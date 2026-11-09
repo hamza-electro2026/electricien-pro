@@ -26,6 +26,9 @@ assert.ok(Math.abs(current(2280, 380, true) - 3.4641016151) < 1e-9);
 const circuits = (p, phaseVoltage) => Math.max(1, Math.ceil(p / (0.8 * 10 * phaseVoltage)));
 assert.equal(circuits(920, 230), 1);
 assert.equal(circuits(2760, 400 / Math.sqrt(3)), 2);
+const balancedThreePhaseCircuits = (p, phaseVoltage) => 3 * Math.max(1, Math.ceil((p / 3) / (0.8 * 10 * phaseVoltage)));
+assert.equal(balancedThreePhaseCircuits(2760, 400 / Math.sqrt(3)), 3);
+assert.equal(balancedThreePhaseCircuits(11040, 400 / Math.sqrt(3)), 6);
 
 
 const unbalance = (currents) => { const average = currents.reduce((sum, value) => sum + value, 0) / currents.length; return average > 0 ? Math.max(...currents.map(value => Math.abs(value - average))) / average * 100 : 0; };
