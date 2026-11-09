@@ -275,7 +275,7 @@ function calc2(){const t=T[L],mat=$("mat").value;
  $("o6").innerHTML=row(t.mi,f(r.I),"A","big")+row(t.mpe,f(r.Pe/1000),"kW")+row(t.mid,f(r.Id,0),"A")+row(t.miy,f(r.Iy,0),"A")+row(t.mct,r.K||"—","A")+row(t.mth,f(r.I),"A")+row(t.mbr,"—","")+row(t.mfu,"—","")+row(t.mcb,sc||"—","mm²");
  }
  const area=N("sa"),lm=N("lm"),lw=N("lw"),cu=N("cu2"),mf=N("mf"),room=+ $("rm").value;
- if(area>0&&lm>0&&lw>0&&cu>0&&mf>0&&room>0){
+ if(N("u")>0&&area>0&&lm>0&&lw>0&&cu>0&&cu<=1&&mf>0&&mf<=1&&room>0){
  const n=C.lamps(room,area,lm,cu,mf),W=n*lw,phaseU=sys()==1?N("u"):N("u")/Math.sqrt(3);
  $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/(sys()==1?N("u"):Math.sqrt(3)*N("u"))),"A")+row(t.dn,f(W/area),"W/m²")+row(t.nc,Math.max(1,Math.ceil(W/(0.8*10*phaseU))),"");
  }else{
