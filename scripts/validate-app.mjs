@@ -71,7 +71,7 @@ assert.ok(Math.abs(C.sByDrop("cu", 1, 230, 25, 30, 5).need - 2.9347826087) < 1e-
 assert.equal(C.sByDrop("cu", 1, 230, 25, 30, 5).S, 4);
 assert.equal(C.sByI("cu", 25, 1), 4);
 assert.equal(C.sByI("cu", 25, 3), 4);
-assert.equal(C.sByI("al", 50, 3), 25);
+assert.equal(C.sByI("al", 50, 3), 16);
 assert.equal(C.breaker(5), 6);
 assert.equal(C.breaker(25), 25);
 assert.equal(C.breaker(251), null);
@@ -81,7 +81,7 @@ const motor = C.motor(5500, 380, 0.85, 0.88);
 assert.ok(Math.abs(motor.I - 11.1716383357) < 1e-9);
 assert.ok(Math.abs(motor.Pe - 6250) < 1e-9);
 assert.ok(Math.abs(motor.Iy - motor.Id / 3) < 1e-12);
-assert.equal(C.lamps(200, 20, 800, 0.6, 0.8), 9);
+assert.equal(C.lamps(200, 20, 800, 0.6, 0.8), 11);
 assert.ok(C.qc(20, 0.75, 0.95) > 0);
 assert.ok(C.qc(20, 0.95, 0.75) < 0);
 assert.equal(C.unbalance([10, 10, 10]), 0);
