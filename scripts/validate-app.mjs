@@ -140,3 +140,13 @@ assert.ok(html.includes('len:"Longueur aller (m)"') && html.includes('len:"طو�
 assert.ok(html.includes("source normative et le mode de pose exact") && html.includes("مصدر جدول تحمل التيار والمعيار وطريقة التركيب المرجعية غير محددة"), "Do not imply the undocumented ampacity table has a verified normative basis");
 assert.ok(html.includes("valeur approximative à 20 °C") && html.includes("تقريبية عند 20 درجة مئوية"), "Voltage-drop resistivity assumptions must state reference temperature");
 assert.ok(html.includes("la formule suppose un réseau triphasé équilibré") && html.includes("يفترض توازن الشبكة الثلاثية"), "Three-phase resistive voltage-drop formula must state balanced-load assumption");
+
+assert.equal(C.ohm(230, 2, 0).R, 115);
+assert.equal(C.ohm(230, 0, 115).I, 2);
+assert.equal(C.ohm(0, 2, 115).U, 230);
+assert.equal(C.ohm(230, 2, 115), null, "Ohm calculator must not silently ignore a third supplied value");
+assert.equal(C.ohm(-230, 2, 0), null, "Ohm calculator must reject negative inputs");
+assert.equal(C.ohm(0, 0, 115), null, "Ohm calculator must require exactly two positive values");
+assert.ok(app.includes("cv>0&&Number.isFinite(r)"), "Unit conversion must reject zero/negative/non-finite values");
+assert.ok(app.includes("Saisissez une valeur strictement positive") && app.includes("أدخل قيمة موجبة أكبر من صفر"), "Unit conversion validation message must be bilingual");
+assert.ok(app.includes("const ohm=C.ohm(u,i,rr)"), "Ohm calculator must use validated pure helper");

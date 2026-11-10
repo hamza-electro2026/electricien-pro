@@ -202,7 +202,8 @@ const C={
  amp:(mat,S,s)=>{const t=A[mat],j=t.S.indexOf(S);return j<0?0:(s==1?t.a2:t.a3)[j]},
  sByDrop:(mat,s,U,I,L,pct)=>{const t=A[mat],need=C.k(s)*t.rho*L*I/(pct/100*U);for(const x of t.S)if(x>=need)return{need,S:x};return{need,S:null}},
  dU:(mat,s,I,L,S)=>C.k(s)*A[mat].rho*L*I/S,
- breaker:I=>{for(const x of STD)if(x>=I)return x;return null}
+ breaker:I=>{for(const x of STD)if(x>=I)return x;return null},
+ ohm:(u,i,r)=>{const v=[u,i,r];if(v.some(x=>!Number.isFinite(x)||x<0)||v.filter(x=>x>0).length!==2)return null;if(u>0&&i>0)r=u/i;else if(u>0&&r>0)i=u/r;else u=i*r;return{U:u,I:i,R:r,P:u*i}}
 };
 /*END*/
 const T={fr:{app:"Électricien Pro",sub:"Calculs électriques 220 V / 380 V",sys:"Réseau",mono:"Monophasé 220 V",tri:"Triphasé 380 V",volt:"Tension (V)",cos:"Facteur de puissance cos φ",mat:"Conducteur",cu:"Cuivre",al:"Aluminium",
@@ -304,7 +305,7 @@ SC.push(
 );
 Object.assign(T.fr,{vp:"Tension usuelle",tc:"Correction du cos φ",pq:"Puissance active (kW)",c1:"cos φ actuel",c2:"cos φ visé",qcl:"Batterie de condensateurs",ib:"Courant avant",ia:"Courant après",gn:"Courant économisé",
 cn2:"Qc = P × (tan φ1 − tan φ2). Réduit le courant appelé et évite les pénalités d’énergie réactive. Choisissez le gradin de condensateurs standard immédiatement supérieur.",
-tcv:"Conversion CV / HP / kW",cvv:"Valeur",cvm:"Conversion",k1:"CV → kW",k2:"HP → kW",k3:"kW → CV",k4:"kW → HP",
+tcv:"Conversion CV / HP / kW",cvv:"Valeur",cvm:"Conversion",cvn:"Saisissez une valeur strictement positive pour la conversion.",k1:"CV → kW",k2:"HP → kW",k3:"kW → CV",k4:"kW → HP",
 tct:"Circuits types (résidentiel)",cty:"Circuit",ct0:"Éclairage",ct1:"Prises 16 A",ct2:"Chauffe-eau",ct3:"Lave-linge / lave-vaisselle",ct4:"Plaque de cuisson",ct5:"Climatiseur (suivre la notice)",
 ctn:"Exemples issus de la NF C 15-100 (référence française), pour conducteurs cuivre ; ils ne constituent pas à eux seuls une prescription marocaine. Confirmez les normes NM et les règles du distributeur applicables. Pour un climatiseur ou un appareil spécial, suivez la notice du fabricant.",
 tohm:"Loi d’Ohm et puissance",ou:"Tension U (V)",oi:"Courant I (A)",orr:"Résistance R (Ω)",ohn:"Renseignez deux valeurs parmi U, I et R. La troisième et la puissance P sont calculées. Modèle résistif simple en courant continu ou valeur efficace.",
@@ -315,7 +316,7 @@ sn2:["Étoile-triangle (puissance)","Inversion de sens de rotation","Tableau ré
 sd2:["KM1 alimente le moteur ; KM3 couple en étoile au démarrage. Après la temporisation, KM3 s’ouvre et KM2 couple en triangle. KM2 et KM3 ne doivent jamais être fermés ensemble : verrouillage obligatoire. Moteur 380 V en triangle avec 6 bornes.","KM1 sens avant, KM2 sens arrière : deux phases sont croisées. Verrouillage mécanique et électrique obligatoire pour que KM1 et KM2 ne soient jamais fermés ensemble (court-circuit). Arrêtez le moteur avant d’inverser.","Disjoncteur de branchement, différentiel 30 mA, puis les départs : éclairage 10 A / 1,5 mm², prises 20 A / 2,5 mm² (x3 : prises, chauffe-eau, lave-linge), cuisson 32 A / 6 mm². Prévoyez une réserve de place."]});
 Object.assign(T.ar,{vp:"الجهد المعتاد",tc:"تصحيح cos φ",pq:"القدرة الفعالة (كيلوواط)",c1:"cos φ الحالي",c2:"cos φ المطلوب",qcl:"بطارية المكثفات",ib:"التيار قبل",ia:"التيار بعد",gn:"التيار المُوفَّر",
 cn2:"Qc = P × (tan φ1 − tan φ2). يخفض التيار المسحوب ويتجنب غرامات الطاقة غير الفعالة. اختر أقرب درجة مكثفات قياسية أعلى.",
-tcv:"تحويل CV / HP / كيلوواط",cvv:"القيمة",cvm:"التحويل",k1:"CV ← kW",k2:"HP ← kW",k3:"kW ← CV",k4:"kW ← HP",
+tcv:"تحويل CV / HP / كيلوواط",cvv:"القيمة",cvm:"التحويل",cvn:"أدخل قيمة موجبة أكبر من صفر للتحويل.",k1:"CV ← kW",k2:"HP ← kW",k3:"kW ← CV",k4:"kW ← HP",
 tct:"دوائر نموذجية (سكني)",cty:"الدائرة",ct0:"الإنارة",ct1:"مقابس 16 أمبير",ct2:"سخان الماء",ct3:"غسالة / غسالة أواني",ct4:"لوحة الطبخ",ct5:"مكيف (حسب دليل الجهاز)",
 ctn:"أمثلة من المعيار الفرنسي NF C 15-100 لموصلات نحاسية؛ ولا تمثل وحدها متطلبات المغرب. تحقق من المعايير المغربية NM وتعليمات الموزع المعمول بها. للمكيف أو الأجهزة الخاصة اتبع دليل الصانع.",
 tohm:"قانون أوم والقدرة",ou:"الجهد U (فولت)",oi:"التيار I (أمبير)",orr:"المقاومة R (أوم)",ohn:"أدخل قيمتين من U وI وR، وسيتم حساب القيمة الثالثة والقدرة P. نموذج مقاومي مبسط.",
@@ -334,15 +335,12 @@ function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.
  if(P>0&&a>0&&a<=1&&b>0&&b<=1&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
  $("o10a").innerHTML=row(t.qcl,f(q),"kvar","big")+row(t.ib,f(i1),"A")+row(t.ia,f(i2),"A")+row(t.gn,f(i1-i2),"A")}
  else $("o10a").innerHTML="<div class='note'>"+(L==="ar"?"أدخل قدرة موجبة، ومعاملي قدرة بين 0 و1، على أن يكون المعامل المطلوب أكبر من الحالي.":"Saisissez une puissance positive, deux cos φ entre 0 et 1, avec un cos φ cible supérieur au cos φ actuel.")+"</div>";
- const m=+$("cvm").value,r=C.conv(N("cvv"),m);$("o10b").innerHTML=row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big");
+ const m=+$("cvm").value,cv=N("cvv"),r=C.conv(cv,m);$("o10b").innerHTML=cv>0&&Number.isFinite(r)?row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big"):"<div class=note>"+t.cvn+"</div>";
  const c=CT[+$("ct").value];$("o10c").innerHTML=row(t.sec,f(c[0],1),"mm²","big")+row(t.cbk,c[1],"A"+(c[2]?" ("+c[2]+")":""))+row(t.rcd,"30","mA")}
 function calc4(){
  const t=T[L],u=N("ou"),i=N("oi"),rr=N("orr");
- let R=0,I=0,U=0,valid=false;
- if(u>0&&i>0){U=u;I=i;R=U/I;valid=true}
- else if(u>0&&rr>0){U=u;R=rr;I=U/R;valid=true}
- else if(i>0&&rr>0){I=i;R=rr;U=I*R;valid=true}
- $("o10d").innerHTML=valid?row("U",f(U),"V")+row("I",f(I),"A")+row("R",f(R),"Ω")+row("P",f(U*I),"W","big"):"<div class='note'>"+t.ohn+"</div>";
+ const ohm=C.ohm(u,i,rr);
+ $("o10d").innerHTML=ohm?row("U",f(ohm.U),"V")+row("I",f(ohm.I),"A")+row("R",f(ohm.R),"Ω")+row("P",f(ohm.P),"W","big"):"<div class=note>"+t.ohn+"</div>";
  const q=N("cq")*1000,uc=N("cuu"),hz=N("cf"),ph=+$("cph").value,conn=$("cconn").value;
  if(q>0&&uc>0&&hz>0){
    let Cph=ph==1?q/(2*Math.PI*hz*uc*uc):(conn=="d"?q/(3*2*Math.PI*hz*uc*uc):q/(2*Math.PI*hz*uc*uc));
