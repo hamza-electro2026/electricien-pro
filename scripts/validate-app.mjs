@@ -149,7 +149,7 @@ const serviceWorker = readFileSync(new URL("../sw.js", import.meta.url), "utf8")
 for (const path of ["about.html", "guide.html", "calculs-pratiques.html", "guide-installation.html", "faq.html", "privacy.html", "contact.html"]) {
   assert.ok(serviceWorker.includes(`"${path}"`), `Service worker must cache ${path} for offline reading`);
 }
-assert.ok(serviceWorker.includes('const V="ep-v10"'), "Service worker cache version must change when the offline file list changes");
+assert.ok(serviceWorker.includes('const V="ep-v11"'), "Service worker cache version must change when the offline file list changes");
 
 assert.ok(html.includes('shortu:"Tension phase-neutre U (V)"') && html.includes('shortu:"الجهد بين الطور والمحايد U (فولت)"'), "Short-circuit voltage input must explicitly be phase-to-neutral");
 assert.ok(html.includes("U0 est la tension phase-neutre") && html.includes("ليست معادلة لقصر ثلاثي الأطوار"), "Short-circuit estimate must state its single-phase loop assumptions");
