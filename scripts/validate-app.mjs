@@ -160,7 +160,7 @@ assert.ok(html.includes('len:"Longueur aller (m)"') && html.includes('len:"طو�
 assert.ok(html.includes("source normative et le mode de pose exact") && html.includes("مصدر جدول تحمل التيار والمعيار وطريقة التركيب المرجعية غير محددة"), "Do not imply the undocumented ampacity table has a verified normative basis");
 assert.ok(html.includes("coefficient conventionnel de calcul, pas la résistivité à 20 °C") && html.includes("معامل حسابي اصطلاحي وليست مقاومية الموصل عند 20 درجة مئوية"), "Do not mislabel the application's conventional voltage-drop coefficients as 20°C resistivity");
 assert.ok(html.includes("NM EN 60228") && html.includes("درجة حرارة التشغيل"), "Direct conductor resistance checks to NM EN 60228 or manufacturer data corrected to service temperature");
-assert.ok(html.includes("ρ:0.0225") && html.includes("rho:0.036"), "Preserve the existing calculation coefficients pending a justified engineering review");
+assert.ok(html.includes("rho:0.0225") && html.includes("rho:0.036"), "Preserve the existing calculation coefficients pending a justified engineering review");
 assert.ok(html.includes("la formule suppose un réseau triphasé équilibré") && html.includes("يفترض توازن الشبكة الثلاثية"), "Three-phase resistive voltage-drop formula must state balanced-load assumption");
 
 assert.equal(C.ohm(230, 2, 0).R, 115);
