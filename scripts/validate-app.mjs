@@ -120,6 +120,10 @@ assert.ok(app.includes("courants sinusoïdaux décalés de 120°") && app.includ
 assert.ok(app.includes("NM 06.1.100 à NM 06.1.106") && app.includes("NM IEC 60909-0") && app.includes("NM EN 50160"), "Moroccan references must be explicit");
 assert.ok(app.includes("NF C 15-100 est une référence française, pas une prescription marocaine") && app.includes("NF C 15-100 مرجع فرنسي"), "French reference must not be presented as Moroccan law");
 assert.ok(app.includes("IEC 60038 retient 230/400 V") && app.includes("يعتمد IEC 60038 قيمة 230/400 فولت"), "Voltage defaults must be distinguished from current IEC reference values");
+assert.ok(app.includes('priceRaw=String($("cp").value).trim()') && app.includes("Number.isFinite(price)&&price>=0"), "Energy cost must reject a blank/non-numeric tariff while allowing an explicit zero tariff");
+assert.ok(app.includes("[n,W,phaseU,Iest,density,circuits].every(Number.isFinite)"), "Lighting results must not render Infinity for extreme inputs");
+assert.ok(app.includes("row(t.earthResult") && app.includes("row(t.iccResult") && app.includes("row(t.primaryCurrent") && app.includes("row(t.secondaryCurrent"), "Advanced calculation result labels must use translations");
+assert.ok(app.includes('currentUnbalance:"Déséquilibre des courants estimé"') && app.includes('currentUnbalance:"اختلال التيارات التقديري"'), "Phase-current imbalance label must be bilingual");
 
 // Public content pages must be discoverable and contain useful bilingual material.
 const publicPages = [
@@ -149,7 +153,7 @@ const serviceWorker = readFileSync(new URL("../sw.js", import.meta.url), "utf8")
 for (const path of ["about.html", "guide.html", "calculs-pratiques.html", "guide-installation.html", "faq.html", "privacy.html", "contact.html"]) {
   assert.ok(serviceWorker.includes(`"${path}"`), `Service worker must cache ${path} for offline reading`);
 }
-assert.ok(serviceWorker.includes('const V="ep-v10"'), "Service worker cache version must change when the offline file list changes");
+assert.ok(serviceWorker.includes('const V="ep-v11"'), "Service worker cache version must change when the offline file list changes");
 
 assert.ok(html.includes('shortu:"Tension phase-neutre U (V)"') && html.includes('shortu:"الجهد بين الطور والمحايد U (فولت)"'), "Short-circuit voltage input must explicitly be phase-to-neutral");
 assert.ok(html.includes("U0 est la tension phase-neutre") && html.includes("ليست معادلة لقصر ثلاثي الأطوار"), "Short-circuit estimate must state its single-phase loop assumptions");
