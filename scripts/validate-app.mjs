@@ -150,3 +150,37 @@ assert.equal(C.ohm(0, 0, 115), null, "Ohm calculator must require exactly two po
 assert.ok(app.includes("cv>0&&Number.isFinite(r)"), "Unit conversion must reject zero/negative/non-finite values");
 assert.ok(app.includes("Saisissez une valeur strictement positive") && app.includes("أدخل قيمة موجبة أكبر من صفر"), "Unit conversion validation message must be bilingual");
 assert.ok(app.includes("const ohm=C.ohm(u,i,rr)"), "Ohm calculator must use validated pure helper");
+
+const capSingle = C.capBank(5000, 230, 50, 1, "d");
+const capDelta = C.capBank(5000, 400, 50, 3, "d");
+const capStar = C.capBank(5000, 400, 50, 3, "y");
+assert.ok(Math.abs(capSingle * 1e6 - 300.8600058) < 1e-6);
+assert.ok(Math.abs(capDelta * 1e6 - 33.15727981) < 1e-7);
+assert.ok(Math.abs(capStar * 1e6 - 99.47183943) < 1e-7);
+assert.equal(C.capBank(0, 230, 50, 1, "d"), null);
+assert.equal(C.capBank(5000, 0, 50, 3, "y"), null);
+assert.equal(C.capBank(5000, 400, 50, 2, "d"), null);
+
+const earth = C.earthRod(100, 2, 0.016);
+assert.ok(Math.abs(earth - 41.49653276) < 1e-7);
+assert.equal(C.earthRod(100, 0, 0.016), null);
+assert.equal(C.earthRod(100, 0.001, 0.016), null);
+assert.ok(Math.abs(C.shortCircuit(230, 0.5) - 460) < 1e-12);
+assert.equal(C.shortCircuit(230, 0), null);
+assert.equal(C.shortCircuit(-230, 0.5), null);
+
+const transformer = C.transformer(100, 20000, 400, 3);
+assert.ok(Math.abs(transformer.ip - 2.886751346) < 1e-9);
+assert.ok(Math.abs(transformer.is - 144.3375673) < 1e-7);
+assert.equal(C.transformer(100, 20000, 0, 3), null);
+assert.equal(C.transformer(100, 20000, 400, 2), null);
+
+const balanced = C.balance(400, 0.9, [3000, 2500, 2000]);
+assert.ok(Math.abs(balanced.unbalance - 20) < 1e-10);
+assert.ok(Math.abs(balanced.neutral - 4.166666667) < 1e-8);
+assert.equal(C.balance(400, 0, [3000, 2500, 2000]), null);
+assert.equal(C.balance(400, 0.9, [3000, -1, 2000]), null);
+assert.equal(C.balance(400, 0.9, [0, 0, 0]), null);
+assert.ok(app.includes("C.capBank(q,uc,hz,ph,conn)") && app.includes("C.earthRod(rho,len,dia)"));
+assert.ok(app.includes("C.shortCircuit(su,z)") && app.includes("C.transformer(kva,up,us,phase)"));
+assert.ok(app.includes("C.balance(vl,bc,loads)"), "Advanced calculators must use tested pure helpers");
