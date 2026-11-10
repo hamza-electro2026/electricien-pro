@@ -287,8 +287,12 @@ function calc2(){const t=T[L],mat=$("mat").value;
  }
  const area=N("sa"),lm=N("lm"),lw=N("lw"),cu=N("cu2"),mf=N("mf"),room=+ $("rm").value;
  if(N("u")>0&&area>0&&lm>0&&lw>0&&cu>0&&cu<=1&&mf>0&&mf<=1&&room>0){
- const n=C.lamps(room,area,lm,cu,mf),W=n*lw,phaseU=sys()==1?N("u"):N("u")/Math.sqrt(3);
- $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(W/(sys()==1?N("u"):Math.sqrt(3)*N("u"))),"A")+row(t.dn,f(W/area),"W/m²")+row(t.nc,(sys()==1?Math.max(1,Math.ceil(W/(0.8*10*phaseU))):3*Math.max(1,Math.ceil((W/3)/(0.8*10*phaseU)))),"");
+ const n=C.lamps(room,area,lm,cu,mf),W=n*lw,phaseU=sys()==1?N("u"):N("u")/Math.sqrt(3),Iest=W/(sys()==1?N("u"):Math.sqrt(3)*N("u")),density=W/area,circuits=sys()==1?Math.max(1,Math.ceil(W/(0.8*10*phaseU))):3*Math.max(1,Math.ceil((W/3)/(0.8*10*phaseU)));
+ if([n,W,phaseU,Iest,density,circuits].every(Number.isFinite)){
+  $("o7").innerHTML=row(t.nl,n,"","big")+row(t.tw,f(W,0),"W")+row(t.ti,f(Iest),"A")+row(t.dn,f(density),"W/m²")+row(t.nc,circuits,"");
+ }else{
+  $("o7").innerHTML=bad("القيم المدخلة خارج نطاق الحساب؛ تحقق من الوحدات والمدخلات.","Valeurs hors plage calculable : vérifiez les unités et la saisie.");
+ }
  }else{
  $("o7").innerHTML=`<div class="note">${L==="ar"?"أدخل مساحة وتدفقاً ضوئياً وقدرة المصباح ومعاملات صحيحة أكبر من صفر.":"Saisissez une surface, un flux, une puissance de lampe et des facteurs strictement positifs."}</div>`;
  }
@@ -310,6 +314,7 @@ SC.push(
  bx(110,5,100,24,"Disj. 40A")+ln(160,29,160,44)+bx(95,44,130,24,"DDR 63A 30mA")+ln(160,68,160,90)+ln(34,90,294,90)+[5,70,135,200,265].map((x,j)=>ln(x+29,90,x+29,118)+bx(x,118,58,26,["10A","20A","20A","20A","32A"][j])+tx(x+8,160,["1,5","2,5","2,5","2,5","6"][j]+"mm²")).join("")
 );
 Object.assign(T.fr,{vp:"Tension usuelle",tc:"Correction du cos φ",pq:"Puissance active (kW)",c1:"cos φ actuel",c2:"cos φ visé",qcl:"Batterie de condensateurs",ib:"Courant avant",ia:"Courant après",gn:"Courant économisé",
+earthResult:"Résistance de terre estimée",iccResult:"Courant de court-circuit estimé",primaryCurrent:"Courant primaire",secondaryCurrent:"Courant secondaire",apparentPower:"Puissance apparente",phaseL1:"Courant L1",phaseL2:"Courant L2",phaseL3:"Courant L3",meanCurrent:"Courant moyen",currentUnbalance:"Déséquilibre des courants estimé",neutralCurrent:"Courant du neutre estimé",
 cn2:"Qc = P × (tan φ1 − tan φ2). Estimation théorique : l’effet sur le courant et la facturation dépend du profil de charge et du tarif. Ne choisissez pas automatiquement le gradin supérieur : vérifiez le risque de surcompensation à faible charge, les harmoniques, les protections et les paliers avec le fabricant ; une batterie automatique peut être nécessaire si la charge varie.",
 tcv:"Conversion CV / HP / kW",cvv:"Valeur",cvm:"Conversion",cvn:"Saisissez une valeur strictement positive pour la conversion.",k1:"CV → kW",k2:"HP → kW",k3:"kW → CV",k4:"kW → HP",
 tct:"Circuits types (résidentiel)",cty:"Circuit",ct0:"Éclairage",ct1:"Prises 16 A",ct2:"Chauffe-eau",ct3:"Lave-linge / lave-vaisselle",ct4:"Plaque de cuisson",ct5:"Climatiseur (suivre la notice)",
@@ -321,6 +326,7 @@ tshort:"Courant de court-circuit présumé (approx.)",shortu:"Tension phase-neut
 sn2:["Étoile-triangle (puissance)","Inversion de sens de rotation","Tableau résidentiel (unifilaire)"],
 sd2:["KM1 alimente le moteur ; KM3 couple en étoile au démarrage. Après la temporisation, KM3 s’ouvre et KM2 couple en triangle. KM2 et KM3 ne doivent jamais être fermés ensemble : verrouillage obligatoire. Moteur 380 V en triangle avec 6 bornes.","KM1 sens avant, KM2 sens arrière : deux phases sont croisées. Verrouillage mécanique et électrique obligatoire pour que KM1 et KM2 ne soient jamais fermés ensemble (court-circuit). Arrêtez le moteur avant d’inverser.","Disjoncteur de branchement, différentiel 30 mA, puis les départs : éclairage 10 A / 1,5 mm², prises 20 A / 2,5 mm² (x3 : prises, chauffe-eau, lave-linge), cuisson 32 A / 6 mm². Prévoyez une réserve de place."]});
 Object.assign(T.ar,{vp:"الجهد المعتاد",tc:"تصحيح cos φ",pq:"القدرة الفعالة (كيلوواط)",c1:"cos φ الحالي",c2:"cos φ المطلوب",qcl:"بطارية المكثفات",ib:"التيار قبل",ia:"التيار بعد",gn:"التيار المُوفَّر",
+earthResult:"مقاومة التأريض التقديرية",iccResult:"تيار القصر التقديري",primaryCurrent:"التيار الابتدائي",secondaryCurrent:"التيار الثانوي",apparentPower:"القدرة الظاهرية",phaseL1:"تيار L1",phaseL2:"تيار L2",phaseL3:"تيار L3",meanCurrent:"متوسط التيار",currentUnbalance:"اختلال التيارات التقديري",neutralCurrent:"تيار المحايد التقديري",
 cn2:"Qc = P × (tan φ1 − tan φ2). هذا تقدير نظري؛ تأثيره على التيار والفاتورة مرتبط بنمط الحمل والتعريفة. لا تختر آلياً الدرجة القياسية الأعلى: تحقق من خطر التعويض الزائد عند الحمل المنخفض، والتوافقيات والحمايات ودرجات المكثفات مع الشركة المصنعة؛ قد تلزم بطارية أوتوماتيكية إذا كان الحمل متغيراً.",
 tcv:"تحويل CV / HP / كيلوواط",cvv:"القيمة",cvm:"التحويل",cvn:"أدخل قيمة موجبة أكبر من صفر للتحويل.",k1:"CV ← kW",k2:"HP ← kW",k3:"kW ← CV",k4:"kW ← HP",
 tct:"دوائر نموذجية (سكني)",cty:"الدائرة",ct0:"الإنارة",ct1:"مقابس 16 أمبير",ct2:"سخان الماء",ct3:"غسالة / غسالة أواني",ct4:"لوحة الطبخ",ct5:"مكيف (حسب دليل الجهاز)",
@@ -351,16 +357,16 @@ function calc4(){
  if(Cph!==null){$("o10e").innerHTML=row("C / phase",f(Cph*1e6,1),"µF","big")+row("Q",f(q/1000),"kvar")+row("f",f(hz),"Hz");}
  else $("o10e").innerHTML="";
  const rho=N("erho"),len=N("elen"),dia=N("edia")/1000,re=C.earthRod(rho,len,dia);
- if(re!==null){$("o10f").innerHTML=row("R terre estimée",f(re),"Ω","big");}
+ if(re!==null){$("o10f").innerHTML=row(t.earthResult,f(re),"Ω","big");}
  else $("o10f").innerHTML="";
  const su=N("su"),z=N("sz"),icc=C.shortCircuit(su,z);
- $("o10g").innerHTML=icc!==null?row("Icc ≈ U / Z",f(icc),"A","big"):"";
+ $("o10g").innerHTML=icc!==null?row(t.iccResult+" (U/Z)",f(icc),"A","big"):"";
  const kva=N("tkva"),up=N("tpri"),us=N("tsec"),phase=+$("tph").value,tr=C.transformer(kva,up,us,phase);
- if(tr){$("o10h").innerHTML=row("I primaire",f(tr.ip),"A","big")+row("I secondaire",f(tr.is),"A")+row("S",f(kva),"kVA");}
+ if(tr){$("o10h").innerHTML=row(t.primaryCurrent,f(tr.ip),"A","big")+row(t.secondaryCurrent,f(tr.is),"A")+row(t.apparentPower,f(kva),"kVA");}
  else $("o10h").innerHTML="";
  const vl=N("vline"),bc=N("balcos"),loads=[N("pa"),N("pb"),N("pc")],bal=C.balance(vl,bc,loads);
  if(bal){const iph=bal.currents;
-   $("o10i").innerHTML=row("L1",f(iph[0]),"A")+row("L2",f(iph[1]),"A")+row("L3",f(iph[2]),"A")+row("Moyenne",f(bal.average),"A")+row("Déséquilibre estimé",f(bal.unbalance)," %","big")+row("Courant neutre estimé",f(bal.neutral),"A");
+   $("o10i").innerHTML=row(t.phaseL1,f(iph[0]),"A")+row(t.phaseL2,f(iph[1]),"A")+row(t.phaseL3,f(iph[2]),"A")+row(t.meanCurrent,f(bal.average),"A")+row(t.currentUnbalance,f(bal.unbalance)," %","big")+row(t.neutralCurrent,f(bal.neutral),"A");
  } else $("o10i").innerHTML="<div class='note'>"+(L==="ar"?"تحقق من جهد موجب، ومعامل قدرة بين 0 و1، وقدرات غير سالبة مع وجود حمل واحد على الأقل.":"Vérifiez une tension positive, un cos φ entre 0 et 1 et des puissances non négatives avec au moins une charge.")+"</div>";
 }
 let L="fr";const $=i=>document.getElementById(i),N=i=>{const v=Number.parseFloat($(i).value);return Number.isFinite(v)?v:0};
@@ -376,9 +382,9 @@ function calc(){const t=T[L],s=sys(),U=N("u"),c=N("cos"),mat=$("mat").value;
  if($("mode").value=="pi"){const P=val*N("un"),I=C.I(s,U,P,c);h=row(t.I,f(I),"A","big")+row(t.S,f(P/c/1000),"kVA")+row("Q",f(P*Math.tan(Math.acos(c))/1000),"kvar")}
  else{const P=C.P(s,U,val,c);h=row(t.P,f(P,0),"W","big")+row("",f(P/1000),"kW")}
  $("o0").innerHTML=h;}
- const kw=N("cw")/1000,hours=N("ch"),days=N("cd"),price=N("cp");
- if(kw>0&&hours>0&&days>0&&price>=0){const e=kw*hours,m=e*days;$("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*price),"DH","big")+row(t.cy,f(m*price*12),"DH");}
- else $("o1").innerHTML=bad("أدخل قدرة واستهلاكاً ومدة صحيحة، والثمن لا يمكن أن يكون سالباً.","Saisissez une puissance et des durées positives ; le tarif ne peut pas être négatif.");
+ const kw=N("cw")/1000,hours=N("ch"),days=N("cd"),priceRaw=String($("cp").value).trim(),price=priceRaw===""?NaN:Number(priceRaw);
+ if(kw>0&&hours>0&&days>0&&Number.isFinite(price)&&price>=0){const e=kw*hours,m=e*days;$("o1").innerHTML=row(t.kwhd,f(e),"kWh")+row(t.kwhm,f(m),"kWh")+row(t.kwhy,f(m*12),"kWh")+row(t.cm,f(m*price),"DH","big")+row(t.cy,f(m*price*12),"DH");}
+ else $("o1").innerHTML=bad("أدخل قدرة ومدة وتعريفة صحيحة (التعريفة لا تكون سالبة).","Saisissez une puissance, des durées et un tarif valides (tarif ≥ 0).");
  const I2=N("i2"),L2=N("l2"),pc=+$("m2").value;
  if(validU&&I2>0&&L2>0&&pc>0){const a=C.sByDrop(mat,s,U,I2,L2,pc),b=C.sByI(mat,I2,s);let r="";
  if(a.S==null||b==null)r=row(t.sf,t.none,"","big");
