@@ -203,7 +203,12 @@ const C={
  sByDrop:(mat,s,U,I,L,pct)=>{const t=A[mat],need=C.k(s)*t.rho*L*I/(pct/100*U);for(const x of t.S)if(x>=need)return{need,S:x};return{need,S:null}},
  dU:(mat,s,I,L,S)=>C.k(s)*A[mat].rho*L*I/S,
  breaker:I=>{for(const x of STD)if(x>=I)return x;return null},
- ohm:(u,i,r)=>{const v=[u,i,r];if(v.some(x=>!Number.isFinite(x)||x<0)||v.filter(x=>x>0).length!==2)return null;if(u>0&&i>0)r=u/i;else if(u>0&&r>0)i=u/r;else u=i*r;return{U:u,I:i,R:r,P:u*i}}
+ ohm:(u,i,r)=>{const v=[u,i,r];if(v.some(x=>!Number.isFinite(x)||x<0)||v.filter(x=>x>0).length!==2)return null;if(u>0&&i>0)r=u/i;else if(u>0&&r>0)i=u/r;else u=i*r;return{U:u,I:i,R:r,P:u*i}},
+ capBank:(q,u,f,phase,connection)=>{if(![q,u,f].every(Number.isFinite)||q<=0||u<=0||f<=0||(phase!==1&&phase!==3)||(connection!=="d"&&connection!=="y"))return null;const d=2*Math.PI*f*u*u,c=phase===1?q/d:connection==="d"?q/(3*d):q/d;return Number.isFinite(c)&&c>0?c:null},
+ earthRod:(rho,len,dia)=>{if(![rho,len,dia].every(Number.isFinite)||rho<=0||len<=0||dia<=0||4*len/dia<=Math.E)return null;const r=rho/(2*Math.PI*len)*(Math.log(4*len/dia)-1);return Number.isFinite(r)&&r>0?r:null},
+ shortCircuit:(u,z)=>{if(![u,z].every(Number.isFinite)||u<=0||z<=0)return null;const i=u/z;return Number.isFinite(i)?i:null},
+ transformer:(kva,up,us,phase)=>{if(![kva,up,us].every(Number.isFinite)||kva<=0||up<=0||us<=0||(phase!==1&&phase!==3))return null;const k=phase===1?1:Math.sqrt(3),ip=kva*1000/(k*up),is=kva*1000/(k*us);return Number.isFinite(ip)&&Number.isFinite(is)?{ip,is}:null},
+ balance:(vl,cos,loads)=>{if(![vl,cos].every(Number.isFinite)||vl<=0||cos<=0||cos>1||!Array.isArray(loads)||loads.length!==3||!loads.every(x=>Number.isFinite(x)&&x>=0)||!loads.some(x=>x>0))return null;const currents=loads.map(x=>x/(vl/Math.sqrt(3)*cos));if(!currents.every(Number.isFinite))return null;const average=currents.reduce((x,y)=>x+y,0)/3,unbalance=C.unbalance(currents),neutral=Math.sqrt(Math.max(0,currents[0]**2+currents[1]**2+currents[2]**2-currents[0]*currents[1]-currents[1]*currents[2]-currents[2]*currents[0]));return{currents,average,unbalance,neutral}}
 };
 /*END*/
 const T={fr:{app:"Électricien Pro",sub:"Calculs électriques 220 V / 380 V",sys:"Réseau",mono:"Monophasé 220 V",tri:"Triphasé 380 V",volt:"Tension (V)",cos:"Facteur de puissance cos φ",mat:"Conducteur",cu:"Cuivre",al:"Aluminium",
@@ -341,28 +346,20 @@ function calc4(){
  const t=T[L],u=N("ou"),i=N("oi"),rr=N("orr");
  const ohm=C.ohm(u,i,rr);
  $("o10d").innerHTML=ohm?row("U",f(ohm.U),"V")+row("I",f(ohm.I),"A")+row("R",f(ohm.R),"Ω")+row("P",f(ohm.P),"W","big"):"<div class=note>"+t.ohn+"</div>";
- const q=N("cq")*1000,uc=N("cuu"),hz=N("cf"),ph=+$("cph").value,conn=$("cconn").value;
- if(q>0&&uc>0&&hz>0){
-   let Cph=ph==1?q/(2*Math.PI*hz*uc*uc):(conn=="d"?q/(3*2*Math.PI*hz*uc*uc):q/(2*Math.PI*hz*uc*uc));
-   $("o10e").innerHTML=row("C / phase",f(Cph*1e6,1),"µF","big")+row("Q",f(q/1000),"kvar")+row("f",f(hz),"Hz");
- } else $("o10e").innerHTML="";
- const rho=N("erho"),len=N("elen"),dia=N("edia")/1000;
- if(rho>0&&len>0&&dia>0&&4*len/dia>Math.E){
-   const re=rho/(2*Math.PI*len)*(Math.log(4*len/dia)-1);
-   $("o10f").innerHTML=row("R terre estimée",f(re),"Ω","big");
- } else $("o10f").innerHTML="";
- const su=N("su"),z=N("sz");
- $("o10g").innerHTML=su>0&&z>0?row("Icc ≈ U / Z",f(su/z),"A","big"):"";
- const kva=N("tkva"),up=N("tpri"),us=N("tsec"),phase=+$("tph").value,k=phase===1?1:Math.sqrt(3);
- if(kva>0&&up>0&&us>0){
-   $("o10h").innerHTML=row("I primaire",f(kva*1000/(k*up)),"A","big")+row("I secondaire",f(kva*1000/(k*us)),"A")+row("S",f(kva),"kVA");
- } else $("o10h").innerHTML="";
- const vl=N("vline"),bc=N("balcos"),loads=[N("pa"),N("pb"),N("pc")];
- if(vl>0&&bc>0&&bc<=1&&loads.every(x=>x>=0)&&loads.some(x=>x>0)){
-   const iph=loads.map(x=>x/(vl/Math.sqrt(3)*bc)),avg=iph.reduce((x,y)=>x+y,0)/3;
-   const unb=C.unbalance(iph);
-   const neutral=Math.sqrt(Math.max(0,iph[0]**2+iph[1]**2+iph[2]**2-iph[0]*iph[1]-iph[1]*iph[2]-iph[2]*iph[0]));
-   $("o10i").innerHTML=row("L1",f(iph[0]),"A")+row("L2",f(iph[1]),"A")+row("L3",f(iph[2]),"A")+row("Moyenne",f(avg),"A")+row("Déséquilibre estimé",f(unb)," %","big")+row("Courant neutre estimé",f(neutral),"A");
+ const q=N("cq")*1000,uc=N("cuu"),hz=N("cf"),ph=+$("cph").value,conn=$("cconn").value,Cph=C.capBank(q,uc,hz,ph,conn);
+ if(Cph!==null){$("o10e").innerHTML=row("C / phase",f(Cph*1e6,1),"µF","big")+row("Q",f(q/1000),"kvar")+row("f",f(hz),"Hz");}
+ else $("o10e").innerHTML="";
+ const rho=N("erho"),len=N("elen"),dia=N("edia")/1000,re=C.earthRod(rho,len,dia);
+ if(re!==null){$("o10f").innerHTML=row("R terre estimée",f(re),"Ω","big");}
+ else $("o10f").innerHTML="";
+ const su=N("su"),z=N("sz"),icc=C.shortCircuit(su,z);
+ $("o10g").innerHTML=icc!==null?row("Icc ≈ U / Z",f(icc),"A","big"):"";
+ const kva=N("tkva"),up=N("tpri"),us=N("tsec"),phase=+$("tph").value,tr=C.transformer(kva,up,us,phase);
+ if(tr){$("o10h").innerHTML=row("I primaire",f(tr.ip),"A","big")+row("I secondaire",f(tr.is),"A")+row("S",f(kva),"kVA");}
+ else $("o10h").innerHTML="";
+ const vl=N("vline"),bc=N("balcos"),loads=[N("pa"),N("pb"),N("pc")],bal=C.balance(vl,bc,loads);
+ if(bal){const iph=bal.currents;
+   $("o10i").innerHTML=row("L1",f(iph[0]),"A")+row("L2",f(iph[1]),"A")+row("L3",f(iph[2]),"A")+row("Moyenne",f(bal.average),"A")+row("Déséquilibre estimé",f(bal.unbalance)," %","big")+row("Courant neutre estimé",f(bal.neutral),"A");
  } else $("o10i").innerHTML="<div class='note'>"+(L==="ar"?"تحقق من جهد موجب، ومعامل قدرة بين 0 و1، وقدرات غير سالبة مع وجود حمل واحد على الأقل.":"Vérifiez une tension positive, un cos φ entre 0 et 1 et des puissances non négatives avec au moins une charge.")+"</div>";
 }
 let L="fr";const $=i=>document.getElementById(i),N=i=>{const v=Number.parseFloat($(i).value);return Number.isFinite(v)?v:0};
