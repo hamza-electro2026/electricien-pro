@@ -57,6 +57,16 @@ const { C } = vm.runInNewContext(
   coreMatch[1] + "\n" + motorMatch[0] + "\n" + advancedMatch[0] + "\n({ C })"
 );
 
+// Input voltage resolver preserves legacy blank defaults but rejects explicit invalid values.
+assert.equal(C.inputVoltage("", 1), 220);
+assert.equal(C.inputVoltage("   ", 3), 380);
+assert.equal(C.inputVoltage("230", 1), 230);
+assert.equal(C.inputVoltage("400", 3), 400);
+assert.equal(C.inputVoltage("0", 1), null);
+assert.equal(C.inputVoltage("-230", 1), null);
+assert.equal(C.inputVoltage("not-a-voltage", 3), null);
+assert.equal(C.inputVoltage("1e999", 3), null);
+
 // Single- and three-phase P/I arithmetic, using the application's own functions.
 assert.equal(C.P(1, 230, 4, 1), 920);
 assert.ok(Math.abs(C.I(3, 400, 2760, 1) - 3.9837168574) < 1e-9);
@@ -100,6 +110,16 @@ assert.ok(app.includes("C.balance(vl,bc,loads)") && app.includes("loads.every(x=
 
 assert.ok(app.includes("vérifier la limite du circuit") && app.includes("تحقق من الحد الخاص بالدائرة"), "Voltage drop between 3% and 5% must not be labelled compliant without knowing circuit type");
 assert.ok(!app.includes('pp<=5?"✔ ≤ 5 %"'), "Remove the misleading universal 5% compliance label");
+assert.ok(app.includes('U=C.inputVoltage($("u").value,s)'), "Power-factor correction must resolve and validate its voltage input");
+assert.ok(app.includes("if(U!==null&&P>0&&a>0"), "Power-factor correction must reject zero, negative and non-numeric voltage");
+assert.ok(app.includes('row(t.rcd,t.rcdv,"")'), "Breaker result must retain the 30 mA circuit context");
+assert.ok(!app.includes('row(t.rcd,t.rcdv.split(" ")[0],"mA")'), "Do not strip the RCD use conditions from the displayed result");
+assert.ok(app.includes("risque de surcompensation à faible charge") && app.includes("خطر التعويض الزائد عند الحمل المنخفض"), "Capacitor correction guidance must warn about overcompensation");
+assert.ok(!app.includes("Choisissez le gradin de condensateurs standard immédiatement supérieur"), "Do not automatically recommend the next capacitor step");
+assert.ok(app.includes("courants sinusoïdaux décalés de 120°") && app.includes("لا يحسب اختلاف معاملات القدرة ولا التوافقيات"), "Phase-balance neutral estimate must state its assumptions");
+assert.ok(app.includes("NM 06.1.100 à NM 06.1.106") && app.includes("NM IEC 60909-0") && app.includes("NM EN 50160"), "Moroccan references must be explicit");
+assert.ok(app.includes("NF C 15-100 est une référence française, pas une prescription marocaine") && app.includes("NF C 15-100 مرجع فرنسي"), "French reference must not be presented as Moroccan law");
+assert.ok(app.includes("IEC 60038 retient 230/400 V") && app.includes("يعتمد IEC 60038 قيمة 230/400 فولت"), "Voltage defaults must be distinguished from current IEC reference values");
 
 // Public content pages must be discoverable and contain useful bilingual material.
 const publicPages = [
