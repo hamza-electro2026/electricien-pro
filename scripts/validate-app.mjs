@@ -94,9 +94,9 @@ assert.ok(app.includes("validPower=val>0") && app.includes("validCos=c>0&&c<=1")
 assert.ok(app.includes("I2>0&&L2>0&&pc>0") && app.includes("I3>0&&L3>0&&S3>0"));
 assert.ok(app.includes("I4>0"), "Breaker selector must reject zero/negative current");
 assert.ok(app.includes("pm<=0||um<=0||mc<=0||mc>1||me<=0||me>100"));
-assert.ok(app.includes("rho>0&&len>0&&dia>0"), "Earth-rod estimator must reject non-positive dimensions");
-assert.ok(app.includes("su>0&&z>0"), "Short-circuit estimator must reject non-positive impedance");
-assert.ok(app.includes("loads.every(x=>x>=0)&&loads.some(x=>x>0)"), "Phase balance must reject negative/all-zero loads");
+assert.ok(app.includes("C.earthRod(rho,len,dia)") && app.includes("rho<=0||len<=0||dia<=0"), "Earth-rod estimator must reject non-positive dimensions");
+assert.ok(app.includes("C.shortCircuit(su,z)") && app.includes("u<=0||z<=0"), "Short-circuit estimator must reject non-positive impedance");
+assert.ok(app.includes("C.balance(vl,bc,loads)") && app.includes("loads.every(x=>Number.isFinite(x)&&x>=0)"), "Phase balance must reject negative/all-zero loads");
 
 assert.ok(app.includes("vérifier la limite du circuit") && app.includes("تحقق من الحد الخاص بالدائرة"), "Voltage drop between 3% and 5% must not be labelled compliant without knowing circuit type");
 assert.ok(!app.includes('pp<=5?"✔ ≤ 5 %"'), "Remove the misleading universal 5% compliance label");
