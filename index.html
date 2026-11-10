@@ -198,6 +198,7 @@ const C={
  k:s=>s==1?2:Math.sqrt(3),
  P:(s,U,I,c)=>C.m(s)*U*I*c,
  I:(s,U,P,c)=>P/(C.m(s)*U*c),
+ inputVoltage:(raw,s)=>{const v=String(raw??"").trim();if(v==="")return s==1?220:380;const n=Number(v);return Number.isFinite(n)&&n>0?n:null},
  sByI:(mat,I,s)=>{const t=A[mat],a=s==1?t.a2:t.a3;for(let j=0;j<a.length;j++)if(a[j]>=I)return t.S[j];return null},
  amp:(mat,S,s)=>{const t=A[mat],j=t.S.indexOf(S);return j<0?0:(s==1?t.a2:t.a3)[j]},
  sByDrop:(mat,s,U,I,L,pct)=>{const t=A[mat],need=C.k(s)*t.rho*L*I/(pct/100*U);for(const x of t.S)if(x>=need)return{need,S:x};return{need,S:null}},
@@ -333,13 +334,13 @@ sd2:["KM1 يغذي المحرك وKM3 يربط بنجمة عند الإقلاع.
 T.fr.sn.push(...T.fr.sn2);T.fr.sd.push(...T.fr.sd2);T.ar.sn.push(...T.ar.sn2);T.ar.sd.push(...T.ar.sd2);
 T.fr.tabs.push("Outils");T.ar.tabs.push("أدوات");
 {const c1=calc;calc=()=>{c1();calc3();calc4()}}
-function calc3(){const t=T[L],s=sys(),U=N("u")||(s==1?220:380),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
+function calc3(){const t=T[L],s=sys(),U=C.inputVoltage($("u").value,s),cl=(x,a,b)=>Math.min(Math.max(x,a),b);
  const uu=String(N("u"));[...$("up").options].forEach(o=>o.selected=o.value==uu);
  const In=C.breaker(N("i4"));
  const P=N("pq"),a=N("c1"),b=N("c2");
- if(P>0&&a>0&&a<=1&&b>0&&b<=1&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
+ if(U!==null&&P>0&&a>0&&a<=1&&b>0&&b<=1&&b>a){const q=C.qc(P,a,b),i1=C.I(s,U,P*1000,a),i2=C.I(s,U,P*1000,b);
  $("o10a").innerHTML=row(t.qcl,f(q),"kvar","big")+row(t.ib,f(i1),"A")+row(t.ia,f(i2),"A")+row(t.gn,f(i1-i2),"A")}
- else $("o10a").innerHTML="<div class='note'>"+(L==="ar"?"أدخل قدرة موجبة، ومعاملي قدرة بين 0 و1، على أن يكون المعامل المطلوب أكبر من الحالي.":"Saisissez une puissance positive, deux cos φ entre 0 et 1, avec un cos φ cible supérieur au cos φ actuel.")+"</div>";
+ else $("o10a").innerHTML="<div class='note'>"+(L==="ar"?"أدخل قدرة وجهداً موجبين، ومعاملي قدرة بين 0 و1، على أن يكون المعامل المطلوب أكبر من الحالي.":"Saisissez une puissance et une tension positives, deux cos φ entre 0 et 1, avec un cos φ cible supérieur au cos φ actuel.")+"</div>";
  const m=+$("cvm").value,cv=N("cvv"),r=C.conv(cv,m);$("o10b").innerHTML=cv>0&&Number.isFinite(r)?row("",f(r,3),m<2?"kW":m==2?"CV":"HP","big"):"<div class=note>"+t.cvn+"</div>";
  const c=CT[+$("ct").value];$("o10c").innerHTML=row(t.sec,f(c[0],1),"mm²","big")+row(t.cbk,c[1],"A"+(c[2]?" ("+c[2]+")":""))+row(t.rcd,"30","mA")}
 function calc4(){
@@ -389,7 +390,7 @@ function calc(){const t=T[L],s=sys(),U=N("u"),c=N("cos"),mat=$("mat").value;
  $("o3").innerHTML=row(t.dv,f(d),"V","big")+row("%",f(pp),"%")+`<div class="r"><span>3 % / 5 %</span><span class="${pp<=3?"ok":pp<=5?"":"bad"}">${pp<=3?"✔ ≤ 3 %":pp<=5?(L==="ar"?"⚠ تحقق من الحد الخاص بالدائرة":"⚠ vérifier la limite du circuit"):"✖ > 5 %"}</span></div>`+row("Iz",az,"A");}
  else $("o3").innerHTML=bad("أدخل جهداً وتياراً ومسافة ومقطعاً صالحاً أكبر من صفر.","Saisissez une tension, un courant, une longueur et une section valides.");
  const I4=N("i4");
- if(I4>0){const In=C.breaker(I4),sc=In?C.sByI(mat,In,s):null;$("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv.split(" ")[0],"mA")+row(t.fg,"—","");}
+ if(I4>0){const In=C.breaker(I4),sc=In?C.sByI(mat,In,s):null;$("o4").innerHTML=row(t.br,In?In:"—","A","big")+row(t.cv,$("lt").value,"")+row(t.cb,sc?sc:"—","mm²")+row(t.rcd,t.rcdv,"")+row(t.fg,"—","");}
  else $("o4").innerHTML=bad("أدخل تياراً أكبر من صفر.","Saisissez un courant strictement positif.");
 }
 function lang(){const t=T[L];document.documentElement.lang=L;document.documentElement.dir=L=="ar"?"rtl":"ltr";
